@@ -63,16 +63,24 @@ app.get('/read/:value', async function (request, response) {
     if (value.length === 24) {
         try {
             const customer = await Posts.findById(value);
+            if (customer.length === 0) {
+                await response.send("no customer found")
+                return;
+            }
             await response.json(customer)
         } catch (err) {
             console.log("error occured", err)
-            await response.json('error occured', err)
+            await response.send('error occured', err)
 
         }
     } else if (!isNaN(value)) {
         console.log("check value", value);
         try {
             const customer = await Posts.find({mobile: value});
+            if (customer.length === 0) {
+                await response.send("no customer found")
+                return;
+            }
             await response.json(customer)
         } catch (err) {
             console.log("error occured", err)
@@ -80,9 +88,9 @@ app.get('/read/:value', async function (request, response) {
     } else {
         try {
             const customer = await Posts.find({username: value});
-            if (customer.length ===  0 ){
-                await response.json("no customer found")
-
+            if (customer.length === 0) {
+                await response.send("no customer found")
+                return;
             }
             await response.json(customer)
         } catch (err) {
@@ -96,9 +104,14 @@ app.get('/readall', async function (request, response) {
 
     try {
         const customer = await Posts.find();
+        if (customer.length === 0) {
+            await response.send("no record found")
+            return;
+        }
         response.json(customer)
     } catch (err) {
         console.log("error occured", err)
+        response.send("error occured")
     }
 
 })
@@ -114,21 +127,21 @@ app.patch('/update/:id', async function (request, response) {
     console.log(`check name: ${name}, mobile : ${mobile}, address ${address},  Description ${description}, extras ${extras} `)
 
     if (body === null) {
-       response.send("empty body")
+        response.send("empty body")
     }
-    if (name){
+    if (name) {
         bodytemparr.name = name;
     }
-    if (mobile){
-        bodytemparr.mobile  = mobile
+    if (mobile) {
+        bodytemparr.mobile = mobile
     }
-    if (address){
+    if (address) {
         bodytemparr.address = address
     }
-    if (description){
+    if (description) {
         bodytemparr.description = description
     }
-    if (extras){
+    if (extras) {
         bodytemparr.extras = extras
     }
 
@@ -170,6 +183,8 @@ app.delete('/deleteall', async function (request, response) {
 
     } catch (error) {
         console.log(("check err", error))
+        await response.json('error occured', error)
+
     }
 
 })
