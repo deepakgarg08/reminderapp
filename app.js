@@ -80,6 +80,10 @@ app.get('/read/:value', async function (request, response) {
     } else {
         try {
             const customer = await Posts.find({username: value});
+            if (customer.length ===  0 ){
+                await response.json("no customer found")
+
+            }
             await response.json(customer)
         } catch (err) {
             console.log("error occured", err)
@@ -102,18 +106,38 @@ app.get('/readall', async function (request, response) {
 
 app.patch('/update/:id', async function (request, response) {
 
+    let bodytemparr = {}
     let body = request.body
     console.log("body  ", body);
+    const {name, mobile, address, description, extras} = body;
+
+    console.log(`check name: ${name}, mobile : ${mobile}, address ${address},  Description ${description}, extras ${extras} `)
+
+    if (body === null) {
+       response.send("empty body")
+    }
+    if (name){
+        bodytemparr.name = name;
+    }
+    if (mobile){
+        bodytemparr.mobile  = mobile
+    }
+    if (address){
+        bodytemparr.address = address
+    }
+    if (description){
+        bodytemparr.description = description
+    }
+    if (extras){
+        bodytemparr.extras = extras
+    }
+
+    console.log('bodytempaarra', bodytemparr)
+
 
     try {
         const updatedPost = await Posts.updateOne({_id: request.params.id}, {
-            $set: {
-                name: body.name,
-                mobile: body.mobile,
-                address: body.address,
-                description: body.description,
-                created_date: body.created_date
-            }
+            $set: bodytemparr
         })
         await response.json(updatedPost)
     } catch (err) {
@@ -122,18 +146,6 @@ app.patch('/update/:id', async function (request, response) {
     }
 
 })
-
-
-let x = {
-    "_id": "5e7a14c80a637e7c47512825",
-    "username": "vikasgaeg",
-    "name": "vikas garg",
-    "mobile": 1234567890,
-    "address": "911 jc ward 35 janta colony",
-    "description": "hgi industries",
-    "created_date": "24/3/2020",
-    "__v": 0
-}
 
 
 app.delete('/delete/:value', async function (request, response) {

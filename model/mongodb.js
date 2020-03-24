@@ -32,7 +32,7 @@ let dbschema = mongoose.Schema({
     },
     "modified_date" :{
         type: String,
-        required: true
+        required: false
     }
 })
 
