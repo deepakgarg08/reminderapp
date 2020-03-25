@@ -49,42 +49,55 @@ app.post('/authenticate', async function (request, response) {
 
 })
 
-app.post('/new', function (request, response) {
+app.post('/new', async function (request, response) {
     console.log("admin_user  ", admin_user)
 
     if (admin_user === 100) {
 
+
         let body = request.body
         console.log("body  ", body);
 
+        try {
+            let customer = await Posts.find({username: body.username});
+            if (customer === null || customer.length === 0) {
+                const currentDate = new Date()
+                const day = currentDate.getDate()
+                const month = currentDate.getMonth() + 1
+                const year = currentDate.getFullYear()
+                const date = day + "/" + month + "/" + year;
 
-        const currentDate = new Date()
-        const day = currentDate.getDate()
-        const month = currentDate.getMonth() + 1
-        const year = currentDate.getFullYear()
-        const date = day + "/" + month + "/" + year;
+                body.created_date = date;
 
-        body.created_date = date;
-
-        function lower(obj) {
-            for (var prop in obj) {
-                if (typeof obj[prop] === 'string') {
-                    obj[prop] = obj[prop].toLowerCase();
+                function lower(obj) {
+                    for (var prop in obj) {
+                        if (typeof obj[prop] === 'string') {
+                            obj[prop] = obj[prop].toLowerCase();
+                        }
+                        if (typeof obj[prop] === 'object') {
+                            lower(obj[prop]);
+                        }
+                    }
+                    return obj;
                 }
-                if (typeof obj[prop] === 'object') {
-                    lower(obj[prop]);
-                }
+
+                body = lower(body)
+                 customer = new Posts(body)
+                customer.save().then(data => {
+                    response.json(data)
+                }).catch(err => response.json(err))
+
+
             }
-            return obj;
+            else{
+                response.send(`username (${body.username}) already exist`)
+            }
+        } catch (err) {
+            console.log("error occured", err)
+            await response.send("error occured")
         }
 
-        body = lower(body)
-        const customer = new Posts(body)
-        customer.save().then(data => {
-            response.json(data)
-        }).catch(err => response.json(err))
-
-    } else {
+        } else {
         response.send("you are not authorized")
     }
 
