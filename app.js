@@ -1,11 +1,11 @@
 const express = require('express')
 
-console.log("hello world")
 let app = express();
 const mongoose = require('mongoose')
 const Posts = require('./model/mongodb')
 
 let uri = "mongodb://localhost:27017/MyDb";
+
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
     if (err) console.log('error connecting the mongodb')
     else console.log('conncection is successful.')
@@ -152,7 +152,12 @@ app.get('/readall', async function (request, response) {
                 await response.send("no record found")
                 return;
             }
-            response.json(customer)
+            console.log("check customer count", customer.length)
+            let resultsets = {
+                Total_No_of_Records : customer.length - 1,
+                Records : customer
+            }
+            response.json(resultsets)
         } catch (err) {
             console.log("error occured", err)
             response.send("error occured")
@@ -233,23 +238,41 @@ app.patch('/update/:id', async function (request, response) {
 })
 
 
-app.delete('/delete/:value', async function (request, response) {
+app.delete('/delete/:id', async function (request, response) {
 
     if (admin_user === 100) {
-        try {
-            await Posts.deleteOne({_id: request.params.value})
-            await response.json("Customer details deleted successfully")
-        } catch (err) {
-            console.log("error occured", err)
-            await response.json('error occured', err)
+        if (request.params.id.length === 24) {
 
+
+            try {
+                let result = await Posts.deleteOne({_id: request.params.id})
+                console.log("cehck result", result);
+
+                if(result.n == 0){
+                    console.log("No record found")
+                    await response.send("No record found with this ID")
+
+                }else{
+                    console.log(" record found")
+                    await response.send("Customer details deleted successfully")
+
+
+                }
+            } catch (err) {
+                console.log("error occured  " + err)
+                await response.send('error occured ' + err)
+
+            }
+        } else {
+            response.send("Invalid CustomerID")
         }
-    } else {
+
+    }
+    else{
         response.send("you are not authorized")
     }
-
-
-})
+    }
+)
 
 app.delete('/deleteall', async function (request, response) {
 
