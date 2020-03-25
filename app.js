@@ -4,10 +4,10 @@ let app = express();
 const mongoose = require('mongoose')
 const Posts = require('./model/mongodb')
 
-let uri = "mongodb://localhost:27017/MyDb";
+let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
 
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
-    if (err) console.log('error connecting the mongodb')
+    if (err) console.log('error connecting the mongodb'+ err)
     else console.log('conncection is successful.')
 })
 
@@ -220,16 +220,6 @@ app.patch('/update/:id', async function (request, response) {
         } else {
             response.send("Invalid Id")
         }
-
-        // try {
-        //     const updatedPost = await Posts.updateOne({_id: request.params.id}, {
-        //         $set: bodytemparr
-        //     })
-        //     await response.json(updatedPost)
-        // } catch (err) {
-        //     console.log("error occured", err)
-        //     await response.send('error occured' + err)
-        // }
     } else {
         response.send("you are not authorized")
     }
