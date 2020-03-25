@@ -7,7 +7,7 @@ const Posts = require('./model/mongodb')
 let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
 
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
-    if (err) console.log('error connecting the mongodb'+ err)
+    if (err) console.log('error connecting the mongodb' + err)
     else console.log('conncection is successful.')
 })
 
@@ -16,6 +16,17 @@ app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({extended: true}))
 
 let admin_user = null;
+
+function getCurrentDate() {
+
+    const currentDate = new Date()
+    const day = currentDate.getDate()
+    const month = currentDate.getMonth() + 1
+    const year = currentDate.getFullYear()
+    const date = day + "/" + month + "/" + year;
+    return date
+}
+
 
 app.get('/', function (request, response) {
     response.send("<h1>welcome to reminder app</h1>")
@@ -61,11 +72,9 @@ app.post('/new', async function (request, response) {
         try {
             let customer = await Posts.find({username: body.username});
             if (customer === null || customer.length === 0) {
-                const currentDate = new Date()
-                const day = currentDate.getDate()
-                const month = currentDate.getMonth() + 1
-                const year = currentDate.getFullYear()
-                const date = day + "/" + month + "/" + year;
+
+                let date = getCurrentDate()
+                console.log('today date',date);
 
                 body.created_date = date;
 
@@ -82,14 +91,13 @@ app.post('/new', async function (request, response) {
                 }
 
                 body = lower(body)
-                 customer = new Posts(body)
+                customer = new Posts(body)
                 customer.save().then(data => {
                     response.json(data)
                 }).catch(err => response.json(err))
 
 
-            }
-            else{
+            } else {
                 response.send(`username (${body.username}) already exist`)
             }
         } catch (err) {
@@ -97,7 +105,7 @@ app.post('/new', async function (request, response) {
             await response.send("error occured")
         }
 
-        } else {
+    } else {
         response.send("you are not authorized")
     }
 
@@ -167,8 +175,8 @@ app.get('/readall', async function (request, response) {
             }
             console.log("check customer count", customer.length)
             let resultsets = {
-                Total_No_of_Records : customer.length - 1,
-                Records : customer
+                Total_No_of_Records: customer.length - 1,
+                Records: customer
             }
             response.json(resultsets)
         } catch (err) {
@@ -211,8 +219,10 @@ app.patch('/update/:id', async function (request, response) {
         if (extras) {
             bodytemparr.extras = extras
         }
+        let date = getCurrentDate()
+        console.log('today date',date);
 
-        // console.log('bodytempaarra', bodytemparr)
+        bodytemparr.modified_date = date
 
         if (request.params.id.length === 24) {
             try {
@@ -243,37 +253,36 @@ app.patch('/update/:id', async function (request, response) {
 
 app.delete('/delete/:id', async function (request, response) {
 
-    if (admin_user === 100) {
-        if (request.params.id.length === 24) {
+        if (admin_user === 100) {
+            if (request.params.id.length === 24) {
 
 
-            try {
-                let result = await Posts.deleteOne({_id: request.params.id})
-                console.log("cehck result", result);
+                try {
+                    let result = await Posts.deleteOne({_id: request.params.id})
+                    console.log("cehck result", result);
 
-                if(result.n == 0){
-                    console.log("No record found")
-                    await response.send("No record found with this ID")
+                    if (result.n == 0) {
+                        console.log("No record found")
+                        await response.send("No record found with this ID")
 
-                }else{
-                    console.log(" record found")
-                    await response.send("Customer details deleted successfully")
+                    } else {
+                        console.log(" record found")
+                        await response.send("Customer details deleted successfully")
 
+
+                    }
+                } catch (err) {
+                    console.log("error occured  " + err)
+                    await response.send('error occured ' + err)
 
                 }
-            } catch (err) {
-                console.log("error occured  " + err)
-                await response.send('error occured ' + err)
-
+            } else {
+                response.send("Invalid CustomerID")
             }
-        } else {
-            response.send("Invalid CustomerID")
-        }
 
-    }
-    else{
-        response.send("you are not authorized")
-    }
+        } else {
+            response.send("you are not authorized")
+        }
     }
 )
 
@@ -288,7 +297,7 @@ app.delete('/deleteall', async function (request, response) {
         } catch (error) {
             console.log(("check err", error))
             await response.json('error occured', error)
-
+            ;
         }
     } else {
         response.send("you are not authorized")
