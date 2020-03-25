@@ -2,8 +2,6 @@ const express = require('express')
 
 console.log("hello world")
 let app = express();
-var MongoClient = require('mongodb').MongoClient;
-const fs = require('fs')
 const mongoose = require('mongoose')
 const Posts = require('./model/mongodb')
 
@@ -17,12 +15,42 @@ mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) =
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({extended: true}))
 
+let admin_user = null;
 
 app.get('/', function (request, response) {
     response.send("<h1>welcome to reminder app</h1>")
 })
 
+app.post('/authenticate', async function (request, response) {
+    let body = request.body
+    console.log("body  ", body);
+    const {username, password, userrole} = body;
+
+    try {
+        let customer = await Posts.find({username: username});
+        if (customer.length === 0) {
+            await response.send("no customer found")
+            return;
+        }
+
+        if (password === customer[0].password && customer[0].userrole === "ADMIN") {
+            console.log("customer password:  ", password);
+            response.send("user authenticated")
+            admin_user = 100;
+            return;
+        }
+
+
+        await response.json(customer)
+    } catch (err) {
+        console.log("error occured", err)
+    }
+
+
+})
+
 app.post('/new', function (request, response) {
+    console.log("admin_user  ", admin_user)
     let body = request.body
     console.log("body  ", body);
 
@@ -45,17 +73,13 @@ app.post('/new', function (request, response) {
         }
         return obj;
     }
-
-    console.log('check body before', body);
-
     body = lower(body)
-    console.log("check final body  :  ", body);
-
     const customer = new Posts(body)
     customer.save().then(data => {
         response.json(data)
     }).catch(err => response.json(err))
 })
+
 //value can be read by id, username and mobile
 app.get('/read/:value', async function (request, response) {
     const value = request.params.value;

@@ -33,6 +33,14 @@ let dbschema = mongoose.Schema({
     "modified_date" :{
         type: String,
         required: false
+    },
+    "password" : {
+        type: String,
+        required: false
+    },
+    "userrole" : {
+        type: String,
+        required: false
     }
 })
 
