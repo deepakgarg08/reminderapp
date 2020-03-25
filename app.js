@@ -4,18 +4,19 @@ let app = express();
 const mongoose = require('mongoose')
 const Posts = require('./model/mongodb')
 
-let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
+let uri = "mongodb+srv://deepakgarg08:92119211@cluster0-zr3gu.mongodb.net/MyDb?retryWrites=true";
+// let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
 
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
     if (err) console.log('error connecting the mongodb' + err)
-    else console.log('conncection is successful.')
+    else console.log('connection is successful.')
 })
 
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({extended: true}))
 
-let admin_user = null;
+let admin_user = null; //100
 
 function getCurrentDate() {
 
@@ -186,8 +187,6 @@ app.get('/readall', async function (request, response) {
     } else {
         response.send("you are not authorized")
     }
-
-
 })
 
 
@@ -268,8 +267,6 @@ app.delete('/delete/:id', async function (request, response) {
                     } else {
                         console.log(" record found")
                         await response.send("Customer details deleted successfully")
-
-
                     }
                 } catch (err) {
                     console.log("error occured  " + err)
