@@ -309,21 +309,6 @@ app.delete('/deleteall', async function (request, response) {
 
 })
 
-//for product addition
-
-app.post('/product', async function (request, response) {
-
-    if (admin_user === 100) {
-        let body = request.body
-        console.log("body  ", body);
-
-    } else {
-        response.send("you are not authorized")
-    }
-
-
-
-})
 
 
 app.listen(process.env.PORT || 3000);
