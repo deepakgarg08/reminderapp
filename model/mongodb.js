@@ -1,5 +1,22 @@
 const mongoose = require('mongoose')
 
+let productschema = mongoose.Schema({
+
+    "product_name" :{
+        type: String,
+        required: true
+    },
+    "description" : {
+        type: String,
+        required: false
+    },
+    "extras" : {
+        type: String,
+        required: false
+    }
+
+})
+
 let dbschema = mongoose.Schema({
 
     "username": {
@@ -41,8 +58,12 @@ let dbschema = mongoose.Schema({
     "userrole" : {
         type: String,
         required: false
-    }
+    },
+    "products" : [productschema]
 })
 
 
+
+
 module.exports = mongoose.model('customer', dbschema)
+// module.exports = mongoose.model('product', productschema)

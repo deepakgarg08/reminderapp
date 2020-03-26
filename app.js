@@ -4,6 +4,7 @@ let app = express();
 const mongoose = require('mongoose')
 const Posts = require('./model/mongodb')
 
+
 let uri = "mongodb+srv://deepakgarg08:92119211@cluster0-zr3gu.mongodb.net/MyDb?retryWrites=true";
 // let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
 
@@ -27,7 +28,6 @@ function getCurrentDate() {
     const date = day + "/" + month + "/" + year;
     return date
 }
-
 
 app.get('/', function (request, response) {
     response.send("<h1>welcome to reminder app</h1>")
@@ -66,7 +66,6 @@ app.post('/new', async function (request, response) {
 
     if (admin_user === 100) {
 
-
         let body = request.body
         console.log("body  ", body);
 
@@ -75,7 +74,7 @@ app.post('/new', async function (request, response) {
             if (customer === null || customer.length === 0) {
 
                 let date = getCurrentDate()
-                console.log('today date',date);
+                console.log('today date', date);
 
                 body.created_date = date;
 
@@ -196,7 +195,7 @@ app.patch('/update/:id', async function (request, response) {
         let bodytemparr = {}
         let body = request.body
         // console.log("body  ", body);
-        const {name, mobile, address, description, extras} = body;
+        const {name, mobile, address, description, extras, products} = body;
 
         console.log(`check name: ${name}, mobile : ${mobile}, address ${address},  Description ${description}, extras ${extras} `)
 
@@ -218,8 +217,12 @@ app.patch('/update/:id', async function (request, response) {
         if (extras) {
             bodytemparr.extras = extras
         }
+        console.log("check products")
+        // if(products){
+        //     bodytemparr.products = products
+        // }
         let date = getCurrentDate()
-        console.log('today date',date);
+        console.log('today date', date);
 
         bodytemparr.modified_date = date
 
@@ -233,7 +236,10 @@ app.patch('/update/:id', async function (request, response) {
                 const updatedPost = await Posts.updateOne({_id: request.params.id}, {
                     $set: bodytemparr
                 })
-                await response.json(updatedPost)
+                const updatedPost2 = await Posts.updateOne({_id: request.params.id}, {
+                    $push:  {products : products}
+                })
+                await response.json({basic: updatedPost, product: updatedPost2})
             } catch (err) {
                 console.log("error occured", err)
                 await response.send('error occured' + err)
@@ -303,7 +309,24 @@ app.delete('/deleteall', async function (request, response) {
 
 })
 
-app.listen(process.env.PORT || 3000 );
+//for product addition
+
+app.post('/product', async function (request, response) {
+
+    if (admin_user === 100) {
+        let body = request.body
+        console.log("body  ", body);
+
+    } else {
+        response.send("you are not authorized")
+    }
+
+
+
+})
+
+
+app.listen(process.env.PORT || 3000);
 console.log("server started at port 3000");
 
 
