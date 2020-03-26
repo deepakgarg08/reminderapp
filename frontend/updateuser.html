@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+<div>
+
+    <label for="username">username:</label><br>
+    <input type="text" id="username" name="username"  required><br>
+    <label for="name">name:</label><br>
+    <input type="text" id="name" name="name"  required><br><br>
+    <label for="mobile">mobile:</label><br>
+    <input type="text" id="mobile" name="mobile"  ><br>
+    <label for="address">address:</label><br>
+    <input type="text" id="address" name="address" ><br><br>
+    <label for="extras">extras:</label><br>
+    <input type="text" id="extras" name="extras" ><br>
+    <input type="submit" value="Submit" onclick="onSubmit()">
+
+</div>
+<script>
+    function onSubmit() {
+        console.log("submit button is triggered");
+
+        var formjson = {};
+        var username =    $('#username').val().trim()
+        var name = $("#name").val().trim()
+        var mobile = $("#mobile").val().trim()
+        var address = $("#address").val().trim()
+        var extras = $("#extras").val().trim()
+
+        formjson.username = username;
+        formjson.name = name;
+        formjson.mobile = mobile;
+        formjson.address = address;
+        formjson.extras = extras;
+        sendJsonToDatabase(formjson)
+
+    }
+
+    function sendJsonToDatabase(formjson) {
+        console.log("checking formjson:", formjson);
+        $.ajax({
+            async: false,
+            url: 'http://127.0.0.1:3000/new',
+            type: 'POST',
+            data: formjson,
+            // dataType: 'JSON',
+            success: function(result) {
+                console.log("check response result ", result)
+                document.write(result)
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

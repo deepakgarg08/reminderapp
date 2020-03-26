@@ -5,8 +5,8 @@ const mongoose = require('mongoose')
 const Posts = require('./model/mongodb')
 
 
-let uri = "mongodb+srv://deepakgarg08:92119211@cluster0-zr3gu.mongodb.net/MyDb?retryWrites=true";
-// let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
+// let uri = "mongodb+srv://deepakgarg08:92119211@cluster0-zr3gu.mongodb.net/MyDb?retryWrites=true";
+let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
 
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
     if (err) console.log('error connecting the mongodb' + err)
@@ -16,6 +16,15 @@ mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) =
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({extended: true}))
+
+app.all('*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
 
 let admin_user = null; //100
 
@@ -36,7 +45,7 @@ app.get('/', function (request, response) {
 app.post('/authenticate', async function (request, response) {
     let body = request.body
     console.log("body  ", body);
-    const {username, password, userrole} = body;
+    const {username, password} = body;
 
     try {
         let customer = await Posts.find({username: username});
@@ -306,12 +315,10 @@ app.delete('/deleteall', async function (request, response) {
         response.send("you are not authorized")
     }
 
-
 })
 
 
 
 app.listen(process.env.PORT || 3000);
 console.log("server started at port 3000");
-
 

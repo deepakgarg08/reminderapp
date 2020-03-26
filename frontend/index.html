@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1> Welcome to LALAKISHOP by JAANI</h1>
+
+<div>
+    <form>
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username" value="dkadmin" required /><br>
+    <label for="password">password:</label><br>
+    <input type="password" id="password" name="password" value="123456" required/><br><br>
+    <input type="submit" value="Submit" onclick="onSubmit()">
+    </form>
+
+
+
+    <script>
+        function onSubmit() {
+            console.log("submit button is triggered");
+
+            var formjson = {};
+            var username =    $("#username").val().trim()
+            var password = $("#password").val().trim()
+
+            console.log("username:   ",username);
+            console.log("password:   ",password);
+
+            formjson.username = username;
+            formjson.password = password;
+            sendJsonToDatabase(formjson)
+
+        }
+
+        function sendJsonToDatabase(formjson) {
+            console.log("checking formjson:", formjson);
+            $.ajax({
+                async: false,
+                url: 'http://127.0.0.1:3000/authenticate',
+                type: 'POST',
+                data: formjson,
+                // dataType: 'JSON',
+                success: function(result) {
+                   console.log("check response result ", result)
+                    document.write(result)
+                }
+            });
+        }
+    </script>
+</div>
+
+</body>
+</html>
+
