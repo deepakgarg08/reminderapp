@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="jquery-3.4.1.min.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+<div>
+
+    <label for="id">Enter ID or USERNAME:</label><br>
+    <input type="text" id="id" name="id" placeholder="Enter ID or USERNAME"><br>
+    <input type="submit" value="Submit" onclick="onSubmit()">
+
+</div>
+<script>
+    function onSubmit() {
+        console.log("submit button is triggered");
+        var id = $('#id').val().trim()
+        $.ajax({
+            async: false,
+            url: 'http://127.0.0.1:3000/delete/'+ id,
+            type: 'DELETE',
+            success: function (result) {
+                console.log("check response result ", result)
+                document.write(result)
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

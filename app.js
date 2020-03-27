@@ -308,7 +308,28 @@ app.delete('/delete/:id', async function (request, response) {
                     await response.send('error occured ' + err)
 
                 }
-            } else {
+            }else if (request.params.id){
+
+                try {
+                    let result = await Posts.deleteOne({username: request.params.id})
+                    console.log("cehck result", result);
+
+                    if (result.n == 0) {
+                        console.log("No record found")
+                        await response.send("No record found with this ID")
+
+                    } else {
+                        console.log(" record found")
+                        await response.send("Customer details deleted successfully")
+                    }
+                } catch (err) {
+                    console.log("error occured  " + err)
+                    await response.send('error occured ' + err)
+
+                }
+            }
+
+            else {
                 response.send("Invalid CustomerID")
             }
 
