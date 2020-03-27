@@ -20,13 +20,14 @@ app.use(express.urlencoded({extended: true}))
 app.all('*', function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS, PATCH');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
 
 
-let admin_user = null; //100
+// let admin_user = null; //100
+let admin_user = 100
 
 function getCurrentDate() {
 
@@ -198,13 +199,13 @@ app.get('/readall', async function (request, response) {
 })
 
 
-app.patch('/update/:id', async function (request, response) {
+app.patch('/update', async function (request, response) {
 
     if (admin_user === 100) {
         let bodytemparr = {}
         let body = request.body
         // console.log("body  ", body);
-        const {name, mobile, address, description, extras, products} = body;
+        const {username, id, name, mobile, address, description, extras, products} = body;
 
         console.log(`check name: ${name}, mobile : ${mobile}, address ${address},  Description ${description}, extras ${extras} `)
 
@@ -235,17 +236,17 @@ app.patch('/update/:id', async function (request, response) {
 
         bodytemparr.modified_date = date
 
-        if (request.params.id.length === 24) {
+        if (id  && id.length === 24) {
             try {
-                const customer = await Posts.findById(request.params.id);
+                const customer = await Posts.findById(id);
                 if (customer === null) {
-                    await response.send("no customer found")
+                    await response.send("no customer found with this id")
                     return;
                 }
-                const updatedPost = await Posts.updateOne({_id: request.params.id}, {
+                const updatedPost = await Posts.updateOne({_id: id}, {
                     $set: bodytemparr
                 })
-                const updatedPost2 = await Posts.updateOne({_id: request.params.id}, {
+                const updatedPost2 = await Posts.updateOne({_id: id}, {
                     $push:  {products : products}
                 })
                 await response.json({basic: updatedPost, product: updatedPost2})
@@ -254,7 +255,26 @@ app.patch('/update/:id', async function (request, response) {
                 await response.send('error occured' + err)
 
             }
-        } else {
+        } else if (username){
+            try {
+                const customer = await Posts.find({username: username});
+                if (customer === null || customer.length === 0) {
+                    await response.send("Wrong username or id")
+                    return;
+                }
+                const updatedPost = await Posts.updateOne({username: username}, {
+                    $set: bodytemparr
+                })
+                const updatedPost2 = await Posts.updateOne({username: username}, {
+                    $push:  {products : products}
+                })
+                await response.json({basic: updatedPost, product: updatedPost2})
+            } catch (err) {
+                console.log("error occured", err)
+                await response.send("error occured")
+            }
+        }
+        else {
             response.send("Invalid Id")
         }
     } else {

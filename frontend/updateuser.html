@@ -2,42 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
 
     <title>Title</title>
 </head>
 <body>
 <div>
 
+    <label for="id">id:</label><br>
+    <input type="text" id="id" name="id" placeholder="optional"><br>
     <label for="username">username:</label><br>
-    <input type="text" id="username" name="username"  required><br>
+    <input type="text" id="username" name="username" required><br>
     <label for="name">name:</label><br>
-    <input type="text" id="name" name="name"  required><br><br>
+    <input type="text" id="name" name="name" required><br><br>
     <label for="mobile">mobile:</label><br>
-    <input type="text" id="mobile" name="mobile"  ><br>
+    <input type="text" id="mobile" name="mobile"><br>
     <label for="address">address:</label><br>
-    <input type="text" id="address" name="address" ><br><br>
+    <input type="text" id="address" name="address"><br><br>
     <label for="extras">extras:</label><br>
-    <input type="text" id="extras" name="extras" ><br>
+    <input type="text" id="extras" name="extras"><br>
+    <h4>product details</h4>
+    <h5>Product1</h5>
+
+    <label for="product_name">product_name:</label><br>
+    <input type="text" id="product_name" name="product_name"><br>
+    <label for="description">description:</label><br>
+    <input type="text" id="description" name="description"><br>
+    <label for="price">price:</label><br>
+    <input type="text" id="price" name="price"><br>
+    <label for="note">note:</label><br>
+    <input type="text" id="note" name="note"><br>
+
     <input type="submit" value="Submit" onclick="onSubmit()">
 
 </div>
 <script>
+
+    function getCurrentDate() {
+
+        const currentDate = new Date()
+        const day = currentDate.getDate()
+        const month = currentDate.getMonth() + 1
+        const year = currentDate.getFullYear()
+        const date = day + "/" + month + "/" + year;
+        return date
+    }
+
+    let date = getCurrentDate()
+    console.log('today date', date);
+
     function onSubmit() {
         console.log("submit button is triggered");
-
+        let products = [];
+        let productlist = {};
         var formjson = {};
-        var username =    $('#username').val().trim()
+
+        var id = $('#id').val().trim()
+        var username = $('#username').val().trim()
         var name = $("#name").val().trim()
         var mobile = $("#mobile").val().trim()
         var address = $("#address").val().trim()
+        var product_name = $("#product_name").val().trim()
+        var description = $("#description").val().trim()
+        var price = $("#price").val().trim()
         var extras = $("#extras").val().trim()
+        var note = $("#note").val().trim()
+
 
         formjson.username = username;
         formjson.name = name;
         formjson.mobile = mobile;
         formjson.address = address;
         formjson.extras = extras;
+        formjson.id = id;
+
+        productlist.product_name = product_name
+        productlist.price = price
+        productlist.note = note
+        productlist.description = description
+        productlist.created_date = date;
+
+        products.push(productlist)
+        formjson.products = products
+        console.log('check products....',products);
+        debugger
+
         sendJsonToDatabase(formjson)
 
     }
@@ -46,11 +95,11 @@
         console.log("checking formjson:", formjson);
         $.ajax({
             async: false,
-            url: 'http://127.0.0.1:3000/new',
-            type: 'POST',
+            url: 'http://127.0.0.1:3000/update',
+            type: 'PATCH',
             data: formjson,
             // dataType: 'JSON',
-            success: function(result) {
+            success: function (result) {
                 console.log("check response result ", result)
                 document.write(result)
             }

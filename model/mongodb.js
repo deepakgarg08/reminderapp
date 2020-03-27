@@ -2,15 +2,24 @@ const mongoose = require('mongoose')
 
 let productschema = mongoose.Schema({
 
-    "product_name" :{
+    "product_name": {
         type: String,
         required: true
     },
-    "description" : {
+    "description": {
         type: String,
         required: false
+    }, "price": {
+        type: Number,
+        required: false
+    }, "note": {
+        type: String,
+        required: false
+    }, "created_date": {
+        type: String,
+        required: true
     },
-    "extras" : {
+    "modified_date": {
         type: String,
         required: false
     }
@@ -39,36 +48,28 @@ let dbschema = mongoose.Schema({
         type: String,
         required: false
     },
-    "extras" : {
+    "extras": {
         type: String,
         required: false
     },
-    "created_date" :{
+    "created_date": {
         type: String,
         required: true
     },
-    "modified_date" :{
+    "modified_date": {
         type: String,
         required: false
     },
-    "password" : {
+    "password": {
         type: String,
         required: false
     },
-    "userrole" : {
+    "userrole": {
         type: String,
         required: false
     },
-    "price" : {
-        type: Number,
-        required:false
-
-    },
-    "products" : [productschema]
+    "products": [productschema]
 })
 
 
-
-
 module.exports = mongoose.model('customer', dbschema)
-// module.exports = mongoose.model('product', productschema)

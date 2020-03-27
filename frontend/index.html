@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h1> Welcome to LALAKISHOP by JAANI</h1>
+<h1> Welcome to LALAKISHOP by SJ</h1>
 
 <div>
-    <form>
+    <form method="post">
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username" value="dkadmin" required /><br>
     <label for="password">password:</label><br>
     <input type="password" id="password" name="password" value="123456" required/><br><br>
-    <input type="submit" value="Submit" onclick="onSubmit()">
+        <input type="button" value="Go back!" onclick="history.back()">
+
+        <input type="submit" value="Submit" onclick="onSubmit()">
     </form>
 
 
@@ -46,7 +48,11 @@
                 // dataType: 'JSON',
                 success: function(result) {
                    console.log("check response result ", result)
-                    document.write(result)
+                   //  if (result === "user authenticated"){
+                   //      console.log(('result',result))
+                        window.location.href = "/reminderapp/frontend/main.html"
+                   //  }else
+                   // { document.write(result)}
                 }
             });
         }
