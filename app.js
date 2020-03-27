@@ -3,6 +3,7 @@ const express = require('express')
 let app = express();
 const mongoose = require('mongoose')
 const Posts = require('./model/mongodb')
+const crypto = require("crypto");
 
 
 // let uri = "mongodb+srv://deepakgarg08:92119211@cluster0-zr3gu.mongodb.net/MyDb?retryWrites=true";
@@ -17,7 +18,7 @@ mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) =
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({extended: true}))
 
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS, PATCH');
@@ -26,8 +27,8 @@ app.all('*', function(req, res, next) {
 });
 
 
-// let admin_user = null; //100
-let admin_user = 100
+let admin_user = null; //100
+// let admin_user = 100
 
 function getCurrentDate() {
 
@@ -46,24 +47,33 @@ app.get('/', function (request, response) {
 app.post('/authenticate', async function (request, response) {
     let body = request.body
     console.log("body  ", body);
-    const {username, password} = body;
+    let {username, password} = body;
 
     try {
         let customer = await Posts.find({username: username});
         if (customer.length === 0) {
-            await response.send("no customer found")
+            await response.send("wrong username or password")
             return;
         }
+
+        password = crypto.createHash("sha256").update(password, "binary").digest("base64");
+        console.log('password::', password);
+
 
         if (password === customer[0].password && customer[0].userrole === "ADMIN") {
             console.log("customer password:  ", password);
             response.send("user authenticated")
             admin_user = 100;
             return;
+        } else {
+            console.log("wrong username or password!")
+            response.send("wrong username or password!")
+            return;
+
         }
 
 
-        await response.json(customer)
+        // await response.json(customer)
     } catch (err) {
         console.log("error occured", err)
     }
@@ -228,53 +238,57 @@ app.patch('/update', async function (request, response) {
             bodytemparr.extras = extras
         }
         console.log("check products")
-        // if(products){
-        //     bodytemparr.products = products
-        // }
+
         let date = getCurrentDate()
         console.log('today date', date);
 
-        bodytemparr.modified_date = date
+        // bodytemparr.modified_date = date
 
-        if (id  && id.length === 24) {
+        if (id && id.length === 24) {
+            let  updatedPost2;
             try {
                 const customer = await Posts.findById(id);
-                if (customer === null) {
+                if (customer === null || customer.length === 0) {
                     await response.send("no customer found with this id")
                     return;
                 }
                 const updatedPost = await Posts.updateOne({_id: id}, {
                     $set: bodytemparr
                 })
-                const updatedPost2 = await Posts.updateOne({_id: id}, {
-                    $push:  {products : products}
-                })
+                if(products){
+                     updatedPost2 = await Posts.updateOne({_id: id}, {
+                        $push: {products: products}
+                    })
+                }
                 await response.json({basic: updatedPost, product: updatedPost2})
+
             } catch (err) {
                 console.log("error occured", err)
                 await response.send('error occured' + err)
 
             }
-        } else if (username){
+        } else if (username) {
             try {
+                let updatedPost2;
                 const customer = await Posts.find({username: username});
                 if (customer === null || customer.length === 0) {
-                    await response.send("Wrong username or id")
+                    await response.send("Wrong username")
                     return;
                 }
                 const updatedPost = await Posts.updateOne({username: username}, {
                     $set: bodytemparr
                 })
-                const updatedPost2 = await Posts.updateOne({username: username}, {
-                    $push:  {products : products}
+                 if(products){
+                 updatedPost2 = await Posts.updateOne({username: username}, {
+                    $push: {products: products}
                 })
+                }
                 await response.json({basic: updatedPost, product: updatedPost2})
             } catch (err) {
                 console.log("error occured", err)
                 await response.send("error occured")
             }
-        }
-        else {
+        } else {
             response.send("Invalid Id")
         }
     } else {
@@ -288,7 +302,7 @@ app.patch('/update', async function (request, response) {
 app.delete('/delete/:id', async function (request, response) {
 
         if (admin_user === 100) {
-            if (request.params.id.length === 24) {
+            if (request.params.id && request.params.id.length === 24) {
 
 
                 try {
@@ -308,11 +322,11 @@ app.delete('/delete/:id', async function (request, response) {
                     await response.send('error occured ' + err)
 
                 }
-            }else if (request.params.id){
+            } else if (request.params.id) {
 
                 try {
                     let result = await Posts.deleteOne({username: request.params.id})
-                    console.log("cehck result", result);
+                    console.log("check result", result);
 
                     if (result.n == 0) {
                         console.log("No record found")
@@ -327,9 +341,7 @@ app.delete('/delete/:id', async function (request, response) {
                     await response.send('error occured ' + err)
 
                 }
-            }
-
-            else {
+            } else {
                 response.send("Invalid CustomerID")
             }
 
@@ -358,8 +370,9 @@ app.delete('/deleteall', async function (request, response) {
 
 })
 
+const port = process.env.PORT || 3000;
+app.listen(port, function (req, res) {
+    console.log("server started on port", port);
 
-
-app.listen(process.env.PORT || 3000);
-console.log("server started at port 3000");
+});
 

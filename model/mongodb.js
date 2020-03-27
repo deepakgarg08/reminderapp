@@ -17,7 +17,7 @@ let productschema = mongoose.Schema({
         required: false
     }, "created_date": {
         type: String,
-        required: true
+        required: false
     },
     "modified_date": {
         type: String,
