@@ -87,7 +87,19 @@ app.post('/new', async function (request, response) {
 
         let body = request.body
         console.log("body  ", body);
+        function lower(obj) {
+            for (var prop in obj) {
+                if (typeof obj[prop] === 'string') {
+                    obj[prop] = obj[prop].toLowerCase();
+                }
+                if (typeof obj[prop] === 'object') {
+                    lower(obj[prop]);
+                }
+            }
+            return obj;
+        }
 
+        body = lower(body)
         try {
             let customer = await Posts.find({username: body.username});
             if (customer === null || customer.length === 0) {
@@ -96,26 +108,10 @@ app.post('/new', async function (request, response) {
                 console.log('today date', date);
 
                 body.created_date = date;
-
-                function lower(obj) {
-                    for (var prop in obj) {
-                        if (typeof obj[prop] === 'string') {
-                            obj[prop] = obj[prop].toLowerCase();
-                        }
-                        if (typeof obj[prop] === 'object') {
-                            lower(obj[prop]);
-                        }
-                    }
-                    return obj;
-                }
-
-                body = lower(body)
                 customer = new Posts(body)
                 customer.save().then(data => {
                     response.json(data)
                 }).catch(err => response.json(err))
-
-
             } else {
                 response.send(`username (${body.username}) already exist`)
             }

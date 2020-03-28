@@ -62,15 +62,15 @@
 
         </table>
 
-<!--        <table id="productTable" >-->
-<!--            <tr>-->
-<!--                <th>id</th>-->
-<!--                <th>product_name</th>-->
-<!--                <th>description</th>-->
-<!--                <th>price</th>-->
-<!--                <th>note</th>-->
-<!--            </tr>-->
-<!--        </table>-->
+        <table id="productTable" >
+            <tr>
+                <th>id</th>
+                <th>product_name</th>
+                <th>description</th>
+                <th>price</th>
+                <th>note</th>
+            </tr>
+        </table>
 
     </div>
 
@@ -99,7 +99,7 @@
     }
 
     function readall() {
-
+        window.location.reload()
         $.ajax({
             async: true,
             url: 'http://127.0.0.1:3000/readall',
@@ -165,15 +165,15 @@
         if (data.address === undefined) {
             data.address = "-";
         }
-        if (data.products.length === 0 || data.products.length === null) {
-            console.log("..........")
-            data.products = "-";
-        } else {
-            for (let i = 0; i < data.products.length; i++) {
-                console.log("data.products[i]::", i)
-                console.log(data.products[i].product_name)
-            }
-        }
+        // if (data.products.length === 0 || data.products.length === null) {
+        //     console.log("..........")
+        //     data.products = "-";
+        // } else {
+        //     for (let i = 0; i < data.products.length; i++) {
+        //         console.log("data.products[i]::", i)
+        //         console.log(data.products[i].product_name)
+        //     }
+        // }
 
         // console.log("data.products...", data.products);
 
@@ -188,16 +188,16 @@
         cell8.innerHTML = data.created_date
         cell9.innerHTML = data.modified_date
         cell10.innerHTML = data.products
+        //
+        // var cell11 = row.insertCell(0);
+        // var cell21 = row.insertCell(1);
+        // var cell31 = row.insertCell(2);
+        // var cell41 = row.insertCell(3);
 
-        var cell11 = row.insertCell(0);
-        var cell21 = row.insertCell(1);
-        var cell31 = row.insertCell(2);
-        var cell41 = row.insertCell(3);
-
-        cell11.innerHTML = data.id
-        cell21.innerHTML = data.username
-        cell31.innerHTML = data.name
-        cell41.innerHTML = data.mobile
+        // cell11.innerHTML = data._id
+        // cell21.innerHTML = data.username
+        // cell31.innerHTML = data.name
+        // cell41.innerHTML = data.mobile
 
         //cell1.title = beschreibung;
         // cell1.setAttribute("onmouseover", "Tip('" + beschreibung + "')", 0);

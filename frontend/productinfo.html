@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="jquery-3.4.1.min.js"></script>
+
+    <title>Welcome to LALAkiSHop</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            /*border-collapse: collapse;*/
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+<h1>WELCOME TO THE LALAKISHOP</h1>
+<div>
+    <nav>
+        <button onclick="readone()">SEARCH</button>
+        <l1>Search All Customer &nbsp &nbsp &nbsp |</l1>
+        <button onclick="readall()">SEARCH ALL</button>
+        <l1>Delete Customer &nbsp &nbsp &nbsp |</l1>
+    </nav>
+</div>
+<div>
+
+    <h2 id="ncustomers">All product list</h2>
+
+    <div id="product" style="display: none">
+
+        <table id="productTable">
+            <tr>
+                <th>id</th>
+                <th>product_name</th>
+                <th>description</th>
+                <th>price</th>
+                <th>note</th>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(readall());
+
+    function readone() {
+
+    }
+
+    function readall() {
+
+        $.ajax({
+            async: true,
+            url: 'http://127.0.0.1:3000/readall',
+            type: 'GET',
+            success: function (res) {
+                console.log("check response result ", res)
+                // console.log("check response result ", res.Records.length)
+                if (res === "you are not authorized") {
+                    rec.innerHTML = "you are not authorized"
+                } else {
+                    let Total_No_of_Records = res.Total_No_of_Records
+                    ncustomers.innerHTML = "All customers list   " + Total_No_of_Records
+
+                    for (let i = 1; i < res.Records.length; i++) {
+                        // console.log("rec.REcods",res.Records)
+                        // displayList(JSON.stringify(res.Records[i]))
+                        displayList(res.Records[i],i)
+
+                    }
+                }
+            }
+        });
+    }
+
+
+
+    function displayList(data,i) {
+        // console.log("data:::",data)
+        var row = document.getElementById("productTable").insertRow();
+        
+        if (data.products.length === 0 || data.products.length === null) {
+            console.log("..........",i)
+            data.products = "-";
+        } else {
+            for (let i = 0; i < data.products.length; i++) {
+                console.log("data.products[i]::", i)
+                console.log(data.products[i].product_name)
+            }
+        }
+
+        // console.log("data.products...", data.products);
+
+
+        var cell11 = row.insertCell(0);
+        var cell21 = row.insertCell(1);
+        var cell31 = row.insertCell(2);
+        var cell41 = row.insertCell(3);
+
+        // cell11.innerHTML = data._id
+        // cell21.innerHTML = data.username
+        // cell31.innerHTML = data.name
+        // cell41.innerHTML = data.mobile
+
+        //cell1.title = beschreibung;
+        // cell1.setAttribute("onmouseover", "Tip('" + beschreibung + "')", 0);
+        // cell1.setAttribute("onmouseout", "UnTip()", 0);
+    }
+
+
+</script>
+
+
+</body>
+</html>
