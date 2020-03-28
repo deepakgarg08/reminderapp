@@ -8,7 +8,7 @@
     <style>
         table {
             font-family: arial, sans-serif;
-            border-collapse: collapse;
+            /*border-collapse: collapse;*/
             width: 100%;
         }
 
@@ -35,7 +35,7 @@
         <l1>Search Customer &nbsp &nbsp &nbsp |</l1>
         <button onclick="readone()">SEARCH</button>
         <l1>Search All Customer &nbsp &nbsp &nbsp |</l1>
-        <button onclick="readall()">SEARCH</button>
+        <button onclick="readall()">SEARCH ALL</button>
         <l1>Delete Customer &nbsp &nbsp &nbsp |</l1>
         <button onclick="deleteCustomer()">DELETE</button>
     </nav>
@@ -90,7 +90,7 @@
     }
 
     function readall() {
-        console.log("I am fired")
+
         $.ajax({
             async: true,
             url: 'http://127.0.0.1:3000/readall',
@@ -111,7 +111,8 @@
                         // rec.innerHTML += "<li id =  " + "record." + i + ">" + JSON.stringify(res.Records[i]) + "</li></br>"
 
                         // displayList(JSON.stringify(res.Records[i]))
-                        displayList(res.Records[i],ack)
+                        displayList(res.Records[i])
+
                     }
                 }
             }
@@ -123,7 +124,7 @@
     }
 
 
-    function displayList(data,ack) {
+    function displayList(data) {
         var row = document.getElementById("mainTable").insertRow();
         // row.setAttribute("height", "50px", 0);
         // row.setAttribute("id", z, 0);
@@ -163,9 +164,8 @@
         cell9.innerHTML = data.modified_date
         cell10.innerHTML = data.products
 
-        if(ack){
-            window.location.reload();
-        }
+
+
         //cell1.title = beschreibung;
         // cell1.setAttribute("onmouseover", "Tip('" + beschreibung + "')", 0);
         // cell1.setAttribute("onmouseout", "UnTip()", 0);
