@@ -1,19 +1,178 @@
-<!DOCTYPE htmlupdateuser.html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="jquery-3.4.1.min.js"></script>
+
     <title>Welcome to LALAkiSHop</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
 </head>
 <body>
 
 <h1>WELCOME TO THE LALAKISHOP</h1>
-<nav>
-    <l1>Add New Customer &nbsp &nbsp &nbsp |</l1>
-    <l1>Update Customer Details &nbsp &nbsp &nbsp |</l1>
-    <l1>Search Customer  &nbsp &nbsp &nbsp | </l1>
-    <l1>Search All Customer  &nbsp &nbsp &nbsp | </l1>
-    <l1>Delete Customer  &nbsp &nbsp &nbsp | </l1>
-</nav>
+<div>
+    <nav>
+        <l1>Add New Customer &nbsp &nbsp &nbsp |</l1>
+        <button onclick="add()"> ADD</button>
+        <l1>Update Customer Details &nbsp &nbsp &nbsp |</l1>
+        <button onclick="update()">UPDATE</button>
+        <l1>Search Customer &nbsp &nbsp &nbsp |</l1>
+        <button onclick="readone()">SEARCH</button>
+        <l1>Search All Customer &nbsp &nbsp &nbsp |</l1>
+        <button onclick="readall()">SEARCH</button>
+        <l1>Delete Customer &nbsp &nbsp &nbsp |</l1>
+        <button onclick="deleteCustomer()">DELETE</button>
+    </nav>
+</div>
+<div>
+
+    <h2 id = "ncustomers">All customers list</h2>
+    <div id="mainframe">
+
+        <table id="mainTable">
+            <tr>
+                <th>id</th>
+                <th>username</th>
+                <th>name</th>
+                <th>mobile</th>
+                <th>address</th>
+                <th>description</th>
+                <th>extras</th>
+                <th>created_date</th>
+                <th>modified_date</th>
+                <th>Products</th>
+
+            </tr>
+
+        </table>
+
+
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(readall());
+    // setTimeout(()=>{
+    //     window.location.href = "createuser.html"
+    // },1000)
+    // window.location.href = "www.google.com"
+    function add() {
+        window.open("createuser.html", "_blank");
+    }
+
+    function update() {
+
+        window.open("updateuser.html", "_blank");
+
+
+    }
+
+    function readone() {
+
+    }
+
+    function readall() {
+        console.log("I am fired")
+        $.ajax({
+            async: true,
+            url: 'http://127.0.0.1:3000/readall',
+            type: 'GET',
+            // data: formjson,
+            // dataType: 'JSON',
+            success: function (res) {
+                console.log("check response result ", res)
+                // console.log("check response result ", res.Records.length)
+                if (res === "you are not authorized") {
+                    rec.innerHTML = "you are not authorized"
+                } else {
+                    let Total_No_of_Records = res.Total_No_of_Records
+                    ncustomers.innerHTML = "All customers list   " +  Total_No_of_Records
+
+                    for (let i = 1; i < res.Records.length; i++) {
+                        // document.getElementsByClassName().innerHTML = + res.Records[i] + "</br>"
+                        // rec.innerHTML += "<li id =  " + "record." + i + ">" + JSON.stringify(res.Records[i]) + "</li></br>"
+
+                        // displayList(JSON.stringify(res.Records[i]))
+                        displayList(res.Records[i],ack)
+                    }
+                }
+            }
+        });
+    }
+
+    function deleteCustomer() {
+        window.open("delete.html", "_blank");
+    }
+
+
+    function displayList(data,ack) {
+        var row = document.getElementById("mainTable").insertRow();
+        // row.setAttribute("height", "50px", 0);
+        // row.setAttribute("id", z, 0);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
+        var cell9 = row.insertCell(8);
+        var cell10 = row.insertCell(9);
+
+        if (data.extras === undefined || data.extras === "") {
+            data.extras = "-"
+        }
+
+        if (data.description === undefined) {
+            data.description = "-"
+        }
+        if( data.modified_date === undefined){
+            data.modified_date= "-";
+        }
+        if( data.address === undefined){
+            data.address = "-";
+        }
+
+        cell1.innerHTML = data._id
+        cell2.innerHTML = data.username
+        cell3.innerHTML = data.name
+        cell4.innerHTML = data.mobile
+        cell5.innerHTML = data.address
+        cell6.innerHTML = data.description
+        cell7.innerHTML = data.extras
+        cell8.innerHTML = data.created_date
+        cell9.innerHTML = data.modified_date
+        cell10.innerHTML = data.products
+
+        if(ack){
+            window.location.reload();
+        }
+        //cell1.title = beschreibung;
+        // cell1.setAttribute("onmouseover", "Tip('" + beschreibung + "')", 0);
+        // cell1.setAttribute("onmouseout", "UnTip()", 0);
+    }
+
+
+</script>
 
 
 </body>

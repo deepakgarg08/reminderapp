@@ -10,27 +10,26 @@
 
 <div>
     <form method="post">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username" value="dkadmin" required /><br>
-    <label for="password">password:</label><br>
-    <input type="password" id="password" name="password" value="123456" required/><br><br>
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" value="dkadmin" required/><br>
+        <label for="password">password:</label><br>
+        <input type="password" id="password" name="password" value="ohhyeah!" required/><br><br>
         <input type="button" value="Go back!" onclick="history.back()">
 
         <input type="submit" value="Submit" onclick="onSubmit()">
     </form>
 
-
-
+    <h3 id ="auth"></h3>
     <script>
         function onSubmit() {
             console.log("submit button is triggered");
 
             var formjson = {};
-            var username =    $("#username").val().trim()
+            var username = $("#username").val().trim()
             var password = $("#password").val().trim()
 
-            console.log("username:   ",username);
-            console.log("password:   ",password);
+            console.log("username:   ", username);
+            console.log("password:   ", password);
 
             formjson.username = username;
             formjson.password = password;
@@ -41,21 +40,27 @@
         function sendJsonToDatabase(formjson) {
             console.log("checking formjson:", formjson);
             $.ajax({
-                async: false,
+                async: true,
                 url: 'http://127.0.0.1:3000/authenticate',
                 type: 'POST',
                 data: formjson,
-                // dataType: 'JSON',
-                success: function(result) {
-                   console.log("check response result ", result)
-                   //  if (result === "user authenticated"){
-                   //      console.log(('result',result))
-                        window.location.href = "/reminderapp/frontend/main.html"
-                   //  }else
-                   // { document.write(result)}
+                dataType: 'JSON',
+                success: function (res) {
+                    console.log("check response result ", res)
+                    if (res.output === "user authenticated"){
+                        auth.innerHTML = "User Authenticated"
+                        window.location.href = "main.html"
+                        //
+
+                    }else{
+                        auth.innerHTML = res.output
+
+                    }
                 }
             });
         }
+
+
     </script>
 </div>
 

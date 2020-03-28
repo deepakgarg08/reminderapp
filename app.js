@@ -52,7 +52,7 @@ app.post('/authenticate', async function (request, response) {
     try {
         let customer = await Posts.find({username: username});
         if (customer.length === 0) {
-            await response.send("wrong username or password")
+            await response.json({"output" : "wrong username or password"})
             return;
         }
 
@@ -62,13 +62,12 @@ app.post('/authenticate', async function (request, response) {
 
         if (password === customer[0].password && customer[0].userrole === "ADMIN") {
             console.log("customer password:  ", password);
-            response.send("user authenticated")
+            await response.json({"output": "user authenticated"})
             admin_user = 100;
-            return;
         } else {
             console.log("wrong username or password!")
-            response.send("wrong username or password!")
-            return;
+            await response.json({"output": "wrong username or password!"})
+
 
         }
 
@@ -242,7 +241,7 @@ app.patch('/update', async function (request, response) {
         let date = getCurrentDate()
         console.log('today date', date);
 
-        // bodytemparr.modified_date = date
+        bodytemparr.modified_date = date
 
         if (id && id.length === 24) {
             let  updatedPost2;
