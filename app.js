@@ -123,8 +123,6 @@ app.post('/new', async function (request, response) {
     } else {
         response.send("you are not authorized")
     }
-
-
 })
 
 //value can be read by id, username and mobile
@@ -157,7 +155,6 @@ app.get('/read/:value', async function (request, response) {
             } catch (err) {
                 console.log("error occured", err)
                 await response.send("error occured")
-
             }
         } else {
             try {
@@ -190,7 +187,7 @@ app.get('/readall', async function (request, response) {
             }
             console.log("check customer count", customer.length)
             let resultsets = {
-                Total_No_of_Records: customer.length - 1,
+                Total_No_of_Records: customer.length -1,
                 Records: customer
             }
             response.json(resultsets)

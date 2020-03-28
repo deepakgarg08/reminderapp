@@ -19,7 +19,7 @@
         <input type="submit" value="Submit" onclick="onSubmit()">
     </form>
 
-    <h3 id ="auth"></h3>
+    <h3 id="auth"></h3>
     <script>
         function onSubmit() {
             console.log("submit button is triggered");
@@ -47,17 +47,15 @@
                 dataType: 'JSON',
                 success: function (res) {
                     console.log("check response result ", res)
-                    if (res.output === "user authenticated"){
+                    if (res.output === "user authenticated") {
                         auth.innerHTML = "User Authenticated"
                         window.location.href = "main.html"
-                    }else{
+                    } else {
                         auth.innerHTML = res.output
                     }
                 }
             });
         }
-
-
     </script>
 </div>
 
