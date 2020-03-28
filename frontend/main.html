@@ -42,8 +42,8 @@
 </div>
 <div>
 
-    <h2 id = "ncustomers">All customers list</h2>
-    <div id="mainframe">
+    <h2 id="ncustomers">All customers list</h2>
+    <div id="mainframe" style="display: none">
 
         <table id="mainTable">
             <tr>
@@ -62,6 +62,15 @@
 
         </table>
 
+<!--        <table id="productTable" >-->
+<!--            <tr>-->
+<!--                <th>id</th>-->
+<!--                <th>product_name</th>-->
+<!--                <th>description</th>-->
+<!--                <th>price</th>-->
+<!--                <th>note</th>-->
+<!--            </tr>-->
+<!--        </table>-->
 
     </div>
 
@@ -103,8 +112,9 @@
                 if (res === "you are not authorized") {
                     rec.innerHTML = "you are not authorized"
                 } else {
+                    mainframe.style.display = "block";
                     let Total_No_of_Records = res.Total_No_of_Records
-                    ncustomers.innerHTML = "All customers list   " +  Total_No_of_Records
+                    ncustomers.innerHTML = "All customers list   " + Total_No_of_Records
 
                     for (let i = 1; i < res.Records.length; i++) {
                         // document.getElementsByClassName().innerHTML = + res.Records[i] + "</br>"
@@ -126,6 +136,7 @@
 
     function displayList(data) {
         var row = document.getElementById("mainTable").insertRow();
+        var productTable = document.getElementById("productTable").insertRow();
         // row.setAttribute("height", "50px", 0);
         // row.setAttribute("id", z, 0);
         var cell1 = row.insertCell(0);
@@ -139,6 +150,8 @@
         var cell9 = row.insertCell(8);
         var cell10 = row.insertCell(9);
 
+        console.log("data.products", data.products)
+
         if (data.extras === undefined || data.extras === "") {
             data.extras = "-"
         }
@@ -146,12 +159,24 @@
         if (data.description === undefined) {
             data.description = "-"
         }
-        if( data.modified_date === undefined){
-            data.modified_date= "-";
+        if (data.modified_date === undefined) {
+            data.modified_date = "-";
         }
-        if( data.address === undefined){
+        if (data.address === undefined) {
             data.address = "-";
         }
+        if (data.products.length === 0 || data.products.length === null) {
+            console.log("..........")
+            data.products = "-";
+        } else {
+            for (let i = 0; i < data.products.length; i++) {
+                console.log("data.products[i]::", i)
+                console.log(data.products[i].product_name)
+            }
+        }
+
+        // console.log("data.products...", data.products);
+
 
         cell1.innerHTML = data._id
         cell2.innerHTML = data.username
@@ -164,7 +189,15 @@
         cell9.innerHTML = data.modified_date
         cell10.innerHTML = data.products
 
+        var cell11 = row.insertCell(0);
+        var cell21 = row.insertCell(1);
+        var cell31 = row.insertCell(2);
+        var cell41 = row.insertCell(3);
 
+        cell11.innerHTML = data.id
+        cell21.innerHTML = data.username
+        cell31.innerHTML = data.name
+        cell41.innerHTML = data.mobile
 
         //cell1.title = beschreibung;
         // cell1.setAttribute("onmouseover", "Tip('" + beschreibung + "')", 0);
