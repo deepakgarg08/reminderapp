@@ -52,7 +52,7 @@
 
         <table id="mainTable" class="mTable">
             <tr>
-                <th>id</th>
+                <th>Serial No.</th>
                 <th>username</th>
                 <th>name</th>
                 <th>mobile</th>
@@ -126,7 +126,7 @@
                     ncustomers.innerHTML = "All customers list   " + Total_No_of_Records
 
                     for (let i = 1; i < res.Records.length; i++) {
-                        displayList(res.Records[i])
+                        displayList(res.Records[i],i)
                     }
                 }
             }
@@ -137,7 +137,7 @@
         window.open("delete.html", "_blank");
     }
 
-    function displayList(data) {
+    function displayList(data,i) {
 
         console.log("let Total_No_of_Records", Total_No_of_Records)
         let row = document.getElementById("mainTable").insertRow();
@@ -174,7 +174,7 @@
             data.address = "-";
         }
 
-        cell1.innerHTML = data._id
+        cell1.innerHTML = i
         cell2.innerHTML = data.username
         cell3.innerHTML = data.name
         cell4.innerHTML = data.mobile

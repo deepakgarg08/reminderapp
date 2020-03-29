@@ -8,7 +8,7 @@
 </head>
 <body>
 <div>
-
+    <h2 id ="delete"></h2>
     <label for="id">Enter ID or USERNAME:</label><br>
     <input type="text" id="id" name="id" placeholder="Enter ID or USERNAME"><br>
     <input type="submit" value="Submit" onclick="onSubmit()">
@@ -24,7 +24,17 @@
             type: 'DELETE',
             success: function (result) {
                 console.log("check response result ", result)
-                document.write(result)
+                if (result === "Invalid username or id") {
+                    delete.innerHTML = result
+                    setTimeout(()=> window.location.reload(),2000)
+
+                }else if(result === "you are not authorized"){
+                    window.location.href = "index.html"
+                }
+                else{
+
+                    window.location.href = "main.html"
+                }
             }
         });
     }

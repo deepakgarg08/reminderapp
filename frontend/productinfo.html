@@ -35,10 +35,11 @@
 
         <table id="productTable">
             <tr>
-                <th>id</th>
+                <th>Serial no</th>
                 <th>product_name</th>
                 <th>description</th>
                 <th>price</th>
+                <th>created_date</th>
                 <th>note</th>
             </tr>
         </table>
@@ -109,11 +110,13 @@
             let cell31 = row.insertCell(2);
             let cell41 = row.insertCell(3);
             let cell51 = row.insertCell(4);
+            let cell61 = row.insertCell(4);
 
-            cell11.innerHTML = data[i]._id
+            cell11.innerHTML = i+1
             cell21.innerHTML = data[i].product_name
             cell31.innerHTML = data[i].description
             cell41.innerHTML = data[i].price
+            cell61.innerHTML = data[i].created_date
             cell51.innerHTML = data[i].note
 
 

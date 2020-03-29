@@ -46,7 +46,7 @@ app.get('/', function (request, response) {
 
 app.post('/authenticate', async function (request, response) {
     let body = request.body
-    console.log("body  ", body);
+    // console.log("body  ", body);
     let {username, password} = body;
 
     try {
@@ -57,24 +57,21 @@ app.post('/authenticate', async function (request, response) {
         }
 
         password = crypto.createHash("sha256").update(password, "binary").digest("base64");
-        console.log('password::', password);
+        // console.log('password::', password);
 
 
         if (password === customer[0].password && customer[0].userrole === "ADMIN") {
-            console.log("customer password:  ", password);
+            // console.log("customer password:  ", password);
             await response.json({"output": "user authenticated"})
             admin_user = 100;
         } else {
-            console.log("wrong username or password!")
+            // console.log("wrong username or password!")
             await response.json({"output": "wrong username or password!"})
-
-
         }
-
-
         // await response.json(customer)
     } catch (err) {
         console.log("error occured", err)
+
     }
 
 
@@ -86,7 +83,7 @@ app.post('/new', async function (request, response) {
     if (admin_user === 100) {
 
         let body = request.body
-        console.log("body  ", body);
+        // console.log("body  ", body);
         function lower(obj) {
             for (let prop in obj) {
                 if (typeof obj[prop] === 'string') {
@@ -105,7 +102,7 @@ app.post('/new', async function (request, response) {
             if (customer === null || customer.length === 0) {
 
                 let date = getCurrentDate()
-                console.log('today date', date);
+                // console.log('today date', date);
 
                 body.created_date = date;
                 customer = new Posts(body)
@@ -113,10 +110,10 @@ app.post('/new', async function (request, response) {
                     response.json(data)
                 }).catch(err => response.json(err))
             } else {
-                response.send(`username (${body.username}) already exist`)
+                response.send(`username already exist`)
             }
         } catch (err) {
-            console.log("error occured", err)
+            // console.log("error occured", err)
             await response.send("error occured")
         }
 
@@ -139,7 +136,7 @@ app.get('/read/:value', async function (request, response) {
                 }
                 await response.json(customer)
             } catch (err) {
-                console.log("error occured", err)
+                // console.log("error occured", err)
                 await response.send('error occured' + err)
 
             }
@@ -153,7 +150,7 @@ app.get('/read/:value', async function (request, response) {
                 }
                 await response.json(customer)
             } catch (err) {
-                console.log("error occured", err)
+                // console.log("error occured", err)
                 await response.send("error occured")
             }
         } else {
@@ -185,14 +182,14 @@ app.get('/readall', async function (request, response) {
                 await response.send("no record found")
                 return;
             }
-            console.log("check customer count", customer.length)
+            // console.log("check customer count", customer.length)
             let resultsets = {
                 Total_No_of_Records: customer.length -1,
                 Records: customer
             }
             response.json(resultsets)
         } catch (err) {
-            console.log("error occured", err)
+            // console.log("error occured", err)
             response.send("error occured")
         }
     } else {
@@ -209,7 +206,7 @@ app.patch('/update', async function (request, response) {
         // console.log("body  ", body);
         const {username, id, name, mobile, address, description, extras, products} = body;
 
-        console.log(`check name: ${name}, mobile : ${mobile}, address ${address},  Description ${description}, extras ${extras} `)
+        // console.log(`check name: ${name}, mobile : ${mobile}, address ${address},  Description ${description}, extras ${extras} `)
 
         if (body === null) {
             response.send("empty body")
@@ -229,10 +226,10 @@ app.patch('/update', async function (request, response) {
         if (extras) {
             bodytemparr.extras = extras
         }
-        console.log("check products")
+        // console.log("check products")
 
         let date = getCurrentDate()
-        console.log('today date', date);
+        // console.log('today date', date);
 
         bodytemparr.modified_date = date
 
@@ -285,7 +282,7 @@ app.patch('/update', async function (request, response) {
                 await response.send("error occured")
             }
         } else {
-            response.send("Invalid Id")
+            response.send("Invalid username or ID")
         }
     } else {
         response.send("you are not authorized")
@@ -338,7 +335,7 @@ app.delete('/delete/:id', async function (request, response) {
 
                 }
             } else {
-                response.send("Invalid CustomerID")
+                response.send("Invalid username or id")
             }
 
         } else {

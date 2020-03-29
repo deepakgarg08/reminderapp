@@ -99,7 +99,17 @@
             // dataType: 'JSON',
             success: function (result) {
                 console.log("check response result ", result)
-                document.write(result)
+                debugger
+                if (result === "Wrong username") {
+                    alert("Username do not exist")
+                }else if(result === "you are not authorized"){
+                    window.location.href = "index.html"
+                }
+                else{
+
+                    window.location.href = "main.html"
+                }
+
             }
         });
     }

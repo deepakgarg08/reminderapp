@@ -24,8 +24,6 @@
 </div>
 <script>
     function onSubmit() {
-        console.log("submit button is triggered");
-
         let formjson = {};
         let username =    $('#username').val().trim()
         let name = $("#name").val().trim()
@@ -43,16 +41,22 @@
     }
 
     function sendJsonToDatabase(formjson) {
-        console.log("checking formjson:", formjson);
         $.ajax({
-            async: false,
+            async: true,
             url: 'http://127.0.0.1:3000/new',
             type: 'POST',
             data: formjson,
             // dataType: 'JSON',
             success: function(result) {
                 console.log("check response result ", result)
-                document.write(result)
+                if (result === "username already exist") {
+                    window.location.reload()
+                }else if(result === "you are not authorized"){
+                    window.location.href = "index.html"
+                }
+                else{
+                    window.location.href = "main.html"
+                }
             }
         });
     }
