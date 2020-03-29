@@ -38,7 +38,7 @@
 
     <h2 id="ncustomers">All product list</h2>
 
-    <div id="product" >
+    <div id="product">
 
         <table id="productTable">
             <tr>
@@ -87,28 +87,29 @@
         //
         var row = document.getElementById("productTable").insertRow();
 
-        if (data.products.length === 0 || data.products.length === null) {
-            data.products = "-";
-        } else {
-            for (let i = 0; i < data.products.length; i++) {
-                console.log(data.products[i].product_name)
 
-                var cell11 = row.insertCell(0);
-                var cell21 = row.insertCell(1);
-                var cell31 = row.insertCell(2);
-                var cell41 = row.insertCell(3);
-                var cell51 = row.insertCell(4);
+        for (let i = 0; i < data.products.length; i++) {
 
-                cell11.innerHTML = data.products[i]._id
-                cell21.innerHTML = data.products[i].product_name
-                cell31.innerHTML = data.products[i].description
-                cell41.innerHTML = data.products[i].price
-                cell51.innerHTML = data.products[i].note
+            console.log(data.products[i].product_name)
 
-
+            if (data.products.length === 0 || data.products.length === null) {
+                data.products = "-";
+                continue
             }
-        }
+            var cell11 = row.insertCell(0);
+            var cell21 = row.insertCell(1);
+            var cell31 = row.insertCell(2);
+            var cell41 = row.insertCell(3);
+            var cell51 = row.insertCell(4);
 
+            cell11.innerHTML = data.products[i]._id
+            cell21.innerHTML = data.products[i].product_name
+            cell31.innerHTML = data.products[i].description
+            cell41.innerHTML = data.products[i].price
+            cell51.innerHTML = data.products[i].note
+
+
+        }
 
 
     }

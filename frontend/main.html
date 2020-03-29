@@ -44,6 +44,7 @@
 <div>
 
     <h2 id="ncustomers">All customers list</h2>
+
     <div id="mainframe" style="display: none">
 
         <table id="mainTable">
@@ -60,12 +61,8 @@
                 <th>Products</th>
 
             </tr>
-
         </table>
-
-
     </div>
-
 </div>
 
 <script>
@@ -90,6 +87,22 @@
 
     }
 
+    function getProductdetails(id_username) {
+        let response;
+        console.log("getProductdetails is triggered");
+        // var id = $('#id').val().trim()
+        $.ajax({
+            async: false,
+            url: 'http://127.0.0.1:3000/read/' + id_username,
+            type: 'GET',
+            success: function (result) {
+                console.log("check response result ", result)
+                response =  result
+            }
+        });
+        return response
+    }
+
     function readall() {
         var tb = document.getElementById('mainTable');
         while (tb.rows.length > 1) {
@@ -105,7 +118,7 @@
                 console.log("check response result ", res)
                 // console.log("check response result ", res.Records.length)
                 if (res === "you are not authorized") {
-                    rec.innerHTML = "you are not authorized"
+                    ncustomers.innerHTML = res
                 } else {
                     mainframe.style.display = "block";
                     Total_No_of_Records = res.Total_No_of_Records
@@ -128,11 +141,18 @@
 
         console.log("let Total_No_of_Records", Total_No_of_Records)
         var row = document.getElementById("mainTable").insertRow();
-        // var productTable = document.getElementById("productTable").insertRow();
-        // row.setAttribute("height", "50px", 0);
-        // row.setAttribute("id", z, 0);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
+
+        let linkurl = getProductdetails(data._id)
+        console.log('linkurl :',linkurl);
+
+        var elLink = document.createElement('a');
+        var href = 'www.google.com';
+        elLink.href = href;
+        elLink.innerHTML = data.username;
+        cell2.appendChild(elLink);
+
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
@@ -157,6 +177,8 @@
         if (data.address === undefined) {
             data.address = "-";
         }
+
+
         // if (data.products.length === 0 || data.products.length === null) {
         //     console.log("..........")
         //     data.products = "-";
@@ -171,7 +193,7 @@
 
 
         cell1.innerHTML = data._id
-        cell2.innerHTML = data.username
+        // cell2.innerHTML = data.username
         cell3.innerHTML = data.name
         cell4.innerHTML = data.mobile
         cell5.innerHTML = data.address
@@ -179,7 +201,7 @@
         cell7.innerHTML = data.extras
         cell8.innerHTML = data.created_date
         cell9.innerHTML = data.modified_date
-        cell10.innerHTML = data.products
+        // cell10.innerHTML = data.products
 
 
     }

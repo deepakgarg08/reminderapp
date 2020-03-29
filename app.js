@@ -248,6 +248,8 @@ app.patch('/update', async function (request, response) {
                     $set: bodytemparr
                 })
                 if(products){
+                    let date = getCurrentDate()
+                    products[0].created_date  = date
                      updatedPost2 = await Posts.updateOne({_id: id}, {
                         $push: {products: products}
                     })
@@ -271,13 +273,8 @@ app.patch('/update', async function (request, response) {
                     $set: bodytemparr
                 })
                  if(products){
-                     // console.log("check products value",products)
-                     // let date = getCurrentDate()
-                     // products.push({created_date : date})
-                     // console.log("check products value",products)
-
-                     // body.created_date = date;
-
+                     let date = getCurrentDate()
+                     products[0].created_date  = date
                      updatedPost2 = await Posts.updateOne({username: username}, {
                     $push: {products: products}
                 })
