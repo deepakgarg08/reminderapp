@@ -6,8 +6,8 @@ const Posts = require('./model/mongodb')
 const crypto = require("crypto");
 
 
-// let uri = "mongodb+srv://deepakgarg08:92119211@cluster0-zr3gu.mongodb.net/MyDb?retryWrites=true";
-let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
+let uri = "mongodb+srv://deepakgarg08:92119211@cluster0-zr3gu.mongodb.net/MyDb?retryWrites=true";
+// let uri = "mongodb://deepakadmin:921192119211@localhost:27017/MyDb";
 
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
     if (err) console.log('error connecting the mongodb' + err)
