@@ -26,14 +26,7 @@
 <body>
 
 <h1>WELCOME TO THE LALAKISHOP</h1>
-<div>
-    <nav>
-        <button onclick="readone()">SEARCH</button>
-        <l1>Search All Customer &nbsp &nbsp &nbsp |</l1>
-        <button onclick="readall()">SEARCH ALL</button>
-        <l1>Delete Customer &nbsp &nbsp &nbsp |</l1>
-    </nav>
-</div>
+
 <div>
 
     <h2 id="nproducts">All product list</h2>
@@ -59,7 +52,6 @@
     $(document).ready(getProductdetails(id_user));
 
     function getProductdetails() {
-        let response;
         let id_username = new URL(location.href).searchParams.get("username");
         console.log('................................', id_username);
         console.log("get Product details is triggered");
@@ -72,29 +64,21 @@
                 console.log("check response result ", result)
                 if (result === "Wrong username or id") {
                     nproducts.innerHTML = result;
+                } else if (result[0].products.length === 0) {
+                    nproducts.innerHTML = "No product found"
+
                 } else {
-
-                    response = result[0].products
-                    console.log("check response result ", response)
-
-                    if (response.length === 0) {
-                        console.log("no product")
-                        nproducts.innerHTML = "No product found"
-
-                    } else {
-                        product.style.display = "block";
-                        displayList(response)
-                    }
+                    product.style.display = "block";
+                    displayList(result[0].products)
                 }
             }
-        });
+        })
     }
+
 
     function displayList(data) {
         console.log("check data ", data)
-
         let tb = document.getElementById('productTable');
-
         while (tb.rows.length > 1) {
             tb.deleteRow(1);
         }

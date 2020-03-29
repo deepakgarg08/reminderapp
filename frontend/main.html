@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <script src="jquery-3.4.1.min.js"></script>
-
     <title>Welcome to LALAkiSHop</title>
     <style>
         table {
@@ -21,6 +20,11 @@
         tr:nth-child(even) {
             background-color: #dddddd;
         }
+
+
+        img:hover {
+            background-color: #a0ffb3;
+        }
     </style>
 </head>
 <body>
@@ -28,31 +32,17 @@
 <h1>WELCOME TO THE LALAKISHOP</h1>
 <div>
     <nav>
-        <l1>Add New Customer &nbsp &nbsp &nbsp</l1>
         <button onclick="add()"> ADD</button>
-        <l1>Update Customer Details &nbsp &nbsp &nbsp</l1>
         <button onclick="update()">UPDATE</button>
-        <l1>Search Customer &nbsp &nbsp &nbsp</l1>
-
-        <label for="iduser"></label>
+        <button onclick="readall()">REFRESH</button>
+        <button onclick="deleteCustomer()">DELETE</button>
+        <span style="float: right">
+        <label for="iduser" ></label>
         <input type="text" id="iduser" name="iduser" placeholder="Enter ID or USERNAME">
         <button onclick="readone()">SEARCH</button>
-        <l1>Search All Customer &nbsp &nbsp &nbsp</l1>
-        <button onclick="readall()">SEARCH ALL</button>
-        <l1>Delete Customer &nbsp &nbsp &nbsp</l1>
-        <button onclick="deleteCustomer()">DELETE</button>
-
+        </span>
     </nav>
 </div>
-<!--<div>-->
-
-<!--    <label for="iduser">Enter ID or USERNAME:</label><br>-->
-<!--    <input type="text" id="iduser" name="iduser" placeholder="Enter ID or USERNAME"><br>-->
-<!--    <input type="submit" value="Submit" onclick="readone()">-->
-
-
-<!--</div>-->
-
 
 <div>
 
@@ -82,19 +72,13 @@
 <script>
     let Total_No_of_Records
     $(document).ready(readall());
-    // setTimeout(()=>{
-    //     window.location.href = "createuser.html"
-    // },1000)
-    // window.location.href = "www.google.com"
+
     function add() {
         window.open("createuser.html", "_blank");
     }
 
     function update() {
-
         window.open("updateuser.html", "_blank");
-
-
     }
 
     function readone() {
@@ -106,10 +90,14 @@
             type: 'GET',
             success: function (result) {
                 console.log("check response result ", result)
-                if(Array.isArray(result)){
+                if (Array.isArray(result)) {
                     result = result[0]
                 }
                 ncustomers.innerHTML = "Search result"
+                let tb = document.getElementById('mainTable');
+                while (tb.rows.length > 1) {
+                    tb.deleteRow(1);
+                }
                 displayList(result)
             }
         });
@@ -150,18 +138,16 @@
     }
 
     function displayList(data) {
+
         console.log("let Total_No_of_Records", Total_No_of_Records)
         let row = document.getElementById("mainTable").insertRow();
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
-
-
         let elLink = document.createElement('a');
         let href = 'productinfo.html?&username=' + data.username;
         elLink.href = href;
-        elLink.innerHTML = data.username;
+        elLink.innerHTML ='<img src = "inventory.png" height="50%" >';
 
-        cell2.appendChild(elLink);
 
         let cell3 = row.insertCell(2);
         let cell4 = row.insertCell(3);
@@ -189,7 +175,7 @@
         }
 
         cell1.innerHTML = data._id
-        // cell2.innerHTML = data.username
+        cell2.innerHTML = data.username
         cell3.innerHTML = data.name
         cell4.innerHTML = data.mobile
         cell5.innerHTML = data.address
@@ -197,11 +183,17 @@
         cell7.innerHTML = data.extras
         cell8.innerHTML = data.created_date
         cell9.innerHTML = data.modified_date
-        // cell10.innerHTML = data.products
+        // cell10.innerHTML = '<img src = "inventory.png" height="50%" >'
+        cell10.appendChild(elLink);
 
 
     }
 
+    $("#iduser").keyup(function () {
+        if (!this.value) {
+            readall()
+        }
+    });
 
 </script>
 
