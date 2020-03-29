@@ -58,7 +58,7 @@
     let id_user = "doraemon"
     $(document).ready(getProductdetails(id_user));
 
-    function getProductdetails(id_username) {
+    function getProductdetails() {
         let response;
         let id_username = new URL(location.href).searchParams.get("username");
         console.log('................................', id_username);
@@ -80,7 +80,6 @@
                     if (response.length === 0) {
                         console.log("no product")
                         nproducts.innerHTML = "No product found"
-
 
                     } else {
                         product.style.display = "block";

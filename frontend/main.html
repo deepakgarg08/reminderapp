@@ -33,6 +33,9 @@
         <l1>Update Customer Details &nbsp &nbsp &nbsp</l1>
         <button onclick="update()">UPDATE</button>
         <l1>Search Customer &nbsp &nbsp &nbsp</l1>
+
+        <label for="iduser"></label>
+        <input type="text" id="iduser" name="iduser" placeholder="Enter ID or USERNAME">
         <button onclick="readone()">SEARCH</button>
         <l1>Search All Customer &nbsp &nbsp &nbsp</l1>
         <button onclick="readall()">SEARCH ALL</button>
@@ -41,13 +44,23 @@
 
     </nav>
 </div>
+<!--<div>-->
+
+<!--    <label for="iduser">Enter ID or USERNAME:</label><br>-->
+<!--    <input type="text" id="iduser" name="iduser" placeholder="Enter ID or USERNAME"><br>-->
+<!--    <input type="submit" value="Submit" onclick="readone()">-->
+
+
+<!--</div>-->
+
+
 <div>
 
     <h2 id="ncustomers">All customers list</h2>
 
     <div id="mainframe" style="display: none">
 
-        <table id="mainTable" class = "mTable">
+        <table id="mainTable" class="mTable">
             <tr>
                 <th>id</th>
                 <th>username</th>
@@ -64,7 +77,6 @@
         </table>
     </div>
 </div>
-
 
 
 <script>
@@ -86,12 +98,23 @@
     }
 
     function readone() {
-
+        console.log("submit button is triggered");
+        var id = $('#iduser').val().trim()
+        $.ajax({
+            async: false,
+            url: 'http://127.0.0.1:3000/read/' + id,
+            type: 'GET',
+            success: function (result) {
+                console.log("check response result ", result)
+                if(Array.isArray(result)){
+                    result = result[0]
+                }
+                ncustomers.innerHTML = "Search result"
+                displayList(result)
+            }
+        });
     }
 
-    function getProductdetails(id_username) {
-
-    }
 
     function readall() {
         let tb = document.getElementById('mainTable');
@@ -126,36 +149,15 @@
         window.open("delete.html", "_blank");
     }
 
-    // $('a').on('click', function(e) {
-    //     if ($(this).hasClass('mTable') === false)
-    //         clearScrollPosition();
-    // });
-    //
-    // function clearScrollPosition() {
-    //     // clear a session storage item
-    //     console.log('fired')
-    //     debugger
-    //     sessionStorage.removeItem('session_id_username');
-    // }
-
-
     function displayList(data) {
         console.log("let Total_No_of_Records", Total_No_of_Records)
         let row = document.getElementById("mainTable").insertRow();
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
 
-        // window.location.reload();
-        // sessionStorage.removeItem('key');
-        // sessionStorage.removeItem('session_id_username');
-        //
-        // sessionStorage.setItem("session_id_username", data.username);
-
-        let linkurl = getProductdetails(data.username)
-        console.log('linkurl :',linkurl);
 
         let elLink = document.createElement('a');
-        let href = 'productinfo.html?&username='+data.username;
+        let href = 'productinfo.html?&username=' + data.username;
         elLink.href = href;
         elLink.innerHTML = data.username;
 
