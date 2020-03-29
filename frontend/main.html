@@ -47,7 +47,7 @@
 
     <div id="mainframe" style="display: none">
 
-        <table id="mainTable">
+        <table id="mainTable" class = "mTable">
             <tr>
                 <th>id</th>
                 <th>username</th>
@@ -64,6 +64,8 @@
         </table>
     </div>
 </div>
+
+
 
 <script>
     let Total_No_of_Records
@@ -88,23 +90,11 @@
     }
 
     function getProductdetails(id_username) {
-        let response;
-        console.log("getProductdetails is triggered");
-        // var id = $('#id').val().trim()
-        $.ajax({
-            async: false,
-            url: 'http://127.0.0.1:3000/read/' + id_username,
-            type: 'GET',
-            success: function (result) {
-                console.log("check response result ", result)
-                response =  result
-            }
-        });
-        return response
+
     }
 
     function readall() {
-        var tb = document.getElementById('mainTable');
+        let tb = document.getElementById('mainTable');
         while (tb.rows.length > 1) {
             tb.deleteRow(1);
         }
@@ -136,31 +126,49 @@
         window.open("delete.html", "_blank");
     }
 
+    // $('a').on('click', function(e) {
+    //     if ($(this).hasClass('mTable') === false)
+    //         clearScrollPosition();
+    // });
+    //
+    // function clearScrollPosition() {
+    //     // clear a session storage item
+    //     console.log('fired')
+    //     debugger
+    //     sessionStorage.removeItem('session_id_username');
+    // }
+
 
     function displayList(data) {
-
         console.log("let Total_No_of_Records", Total_No_of_Records)
-        var row = document.getElementById("mainTable").insertRow();
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
+        let row = document.getElementById("mainTable").insertRow();
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
 
-        let linkurl = getProductdetails(data._id)
+        // window.location.reload();
+        // sessionStorage.removeItem('key');
+        // sessionStorage.removeItem('session_id_username');
+        //
+        // sessionStorage.setItem("session_id_username", data.username);
+
+        let linkurl = getProductdetails(data.username)
         console.log('linkurl :',linkurl);
 
-        var elLink = document.createElement('a');
-        var href = 'www.google.com';
+        let elLink = document.createElement('a');
+        let href = 'productinfo.html?&username='+data.username;
         elLink.href = href;
         elLink.innerHTML = data.username;
+
         cell2.appendChild(elLink);
 
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        var cell6 = row.insertCell(5);
-        var cell7 = row.insertCell(6);
-        var cell8 = row.insertCell(7);
-        var cell9 = row.insertCell(8);
-        var cell10 = row.insertCell(9);
+        let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
+        let cell6 = row.insertCell(5);
+        let cell7 = row.insertCell(6);
+        let cell8 = row.insertCell(7);
+        let cell9 = row.insertCell(8);
+        let cell10 = row.insertCell(9);
 
         console.log("data.products", data.products)
 
@@ -177,20 +185,6 @@
         if (data.address === undefined) {
             data.address = "-";
         }
-
-
-        // if (data.products.length === 0 || data.products.length === null) {
-        //     console.log("..........")
-        //     data.products = "-";
-        // } else {
-        //     for (let i = 0; i < data.products.length; i++) {
-        //         console.log("data.products[i]::", i)
-        //         console.log(data.products[i].product_name)
-        //     }
-        // }
-
-        // console.log("data.products...", data.products);
-
 
         cell1.innerHTML = data._id
         // cell2.innerHTML = data.username

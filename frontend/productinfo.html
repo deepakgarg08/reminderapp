@@ -36,9 +36,9 @@
 </div>
 <div>
 
-    <h2 id="ncustomers">All product list</h2>
+    <h2 id="nproducts">All product list</h2>
 
-    <div id="product">
+    <div id="product" style="display: none">
 
         <table id="productTable">
             <tr>
@@ -55,58 +55,83 @@
 </div>
 
 <script>
-    $(document).ready(readall());
+    let id_user = "doraemon"
+    $(document).ready(getProductdetails(id_user));
 
-    function readall() {
-
+    function getProductdetails(id_username) {
+        let response;
+        let id_username = new URL(location.href).searchParams.get("username");
+        console.log('................................', id_username);
+        console.log("get Product details is triggered");
+        // let id = $('#id').val().trim()
         $.ajax({
-            async: true,
-            url: 'http://127.0.0.1:3000/readall',
+            async: false,
+            url: 'http://127.0.0.1:3000/read/' + id_username,
             type: 'GET',
-            success: function (res) {
-                console.log("check response result ", res)
-                if (res === "you are not authorized") {
-                    rec.innerHTML = "you are not authorized"
+            success: function (result) {
+                console.log("check response result ", result)
+                if (result === "Wrong username or id") {
+                    nproducts.innerHTML = result;
                 } else {
-                    let Total_No_of_Records = res.Total_No_of_Records
-                    for (let i = 1; i < res.Records.length; i++) {
-                        displayList(res.Records[i])
+
+                    response = result[0].products
+                    console.log("check response result ", response)
+
+                    if (response.length === 0) {
+                        console.log("no product")
+                        nproducts.innerHTML = "No product found"
+
+
+                    } else {
+                        product.style.display = "block";
+                        displayList(response)
                     }
                 }
             }
         });
     }
 
-
     function displayList(data) {
-        // var tb = document.getElementById('productTable');
-        //
-        // while (tb.rows.length > 1) {
-        //     tb.deleteRow(1);
-        // }
-        //
-        var row = document.getElementById("productTable").insertRow();
+        console.log("check data ", data)
 
+        let tb = document.getElementById('productTable');
 
-        for (let i = 0; i < data.products.length; i++) {
+        while (tb.rows.length > 1) {
+            tb.deleteRow(1);
+        }
+        for (let i = 0; i < data.length; i++) {
+            let row = document.getElementById("productTable").insertRow();
 
-            console.log(data.products[i].product_name)
+            console.log(data[i].product_name)
 
-            if (data.products.length === 0 || data.products.length === null) {
-                data.products = "-";
-                continue
+            if (data[i]._id === undefined) {
+                data[i]._id = '-'
             }
-            var cell11 = row.insertCell(0);
-            var cell21 = row.insertCell(1);
-            var cell31 = row.insertCell(2);
-            var cell41 = row.insertCell(3);
-            var cell51 = row.insertCell(4);
+            if (data[i].product_name === undefined) {
+                data[i].product_name = '-'
+            }
+            if (data[i].description === undefined) {
+                data[i].description = '-'
+            }
+            if (data[i].price === undefined) {
+                data[i].price = '-'
+            }
+            if (data[i].note === undefined) {
+                data[i].note = '-'
+            }
 
-            cell11.innerHTML = data.products[i]._id
-            cell21.innerHTML = data.products[i].product_name
-            cell31.innerHTML = data.products[i].description
-            cell41.innerHTML = data.products[i].price
-            cell51.innerHTML = data.products[i].note
+
+            let cell11 = row.insertCell(0);
+            let cell21 = row.insertCell(1);
+            let cell31 = row.insertCell(2);
+            let cell41 = row.insertCell(3);
+            let cell51 = row.insertCell(4);
+
+            cell11.innerHTML = data[i]._id
+            cell21.innerHTML = data[i].product_name
+            cell31.innerHTML = data[i].description
+            cell41.innerHTML = data[i].price
+            cell51.innerHTML = data[i].note
 
 
         }

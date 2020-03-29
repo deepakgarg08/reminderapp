@@ -88,7 +88,7 @@ app.post('/new', async function (request, response) {
         let body = request.body
         console.log("body  ", body);
         function lower(obj) {
-            for (var prop in obj) {
+            for (let prop in obj) {
                 if (typeof obj[prop] === 'string') {
                     obj[prop] = obj[prop].toLowerCase();
                 }
