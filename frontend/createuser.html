@@ -4,23 +4,61 @@
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <title>Title</title>
+    <title>Service Mitra: New User</title>
 </head>
+<style type="text/css">
+    body {background-image: url("resource/2.jpg");
+         /* Full height */
+  background-repeat: no-repeat;
+  height: 100%;
+  /* Center and scale the image nicely */
+  background-position: center;
+background-size: cover;
+  }
+    input[type=text] {
+    padding: 12px 20px;
+    margin: 4px 2px;
+  cursor: pointer;
+  border: 2px solid ;
+  border-radius: 4px;
+}
+input[type=submit], input[type=back]
+{
+    background-color: rgba(255, 0, 0, 0.8); /* red with opacity */
+
+  color:white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+div{
+    float: center;
+      margin: auto;
+  width: 12%;
+  padding: 12px;
+}
+h1,h3{text-align: center;}
+</style>
 <body>
+    <h1>Welcome to LalaKiShop</h1>
+    <h3>Register a New Customer</h3>
 <div>
 
+  <form>
     <label for="username">username:</label><br>
-    <input type="text" id="username" name="username"  required><br>
+    <input type="text" id="username" name="username" placeholder="username" required/><br>
     <label for="name">name:</label><br>
-    <input type="text" id="name" name="name"  required><br><br>
+    <input type="text" id="name"  placeholder="Customer Name" required><br><br>
     <label for="mobile">mobile:</label><br>
-    <input type="text" id="mobile" name="mobile"  ><br>
+    <input type="text" id="mobile" name="mobile" placeholder="Mobile No." ><br>
     <label for="address">address:</label><br>
-    <input type="text" id="address" name="address" ><br><br>
+    <input type="text" id="address" name="address" placeholder="Address" ><br><br>
     <label for="extras">extras:</label><br>
-    <input type="text" id="extras" name="extras" ><br>
-    <input type="submit" value="Submit" onclick="onSubmit()">
-
+    <input type="text" id="extras" name="extras"  placeholder="Extra Notes"><br>
+    <input type="submit" value="Submit" onclick="onSubmit()"><br>
+    <input type="button" value="Back" onclick="back()"> 
+</form>
 </div>
 <script>
     function onSubmit() {
@@ -30,6 +68,26 @@
         let mobile = $("#mobile").val().trim()
         let address = $("#address").val().trim()
         let extras = $("#extras").val().trim()
+
+        // if(username === "" || username === null || !username){
+        //   alert("please enter username")
+        //   return
+        // }
+
+        // if(name === "" || name === null || !name){
+        //   alert("please enter name")
+        //   return
+        // }
+
+        // if(mobile === "" || mobile === null || !mobile){
+        //   alert("please enter mobile")
+        //   return
+        // }
+
+        // if(address === "" || address === null || !address){
+        //   alert("please enter address")
+        //   return
+        // }
 
         formjson.username = username;
         formjson.name = name;
@@ -50,15 +108,28 @@
             success: function(result) {
                 console.log("check response result ", result)
                 if (result === "username already exist") {
+                    alert("username already exist")
                     window.location.reload()
                 }else if(result === "you are not authorized"){
+                  alert("you are not authorized")
+
                     window.location.href = "index.html"
                 }
                 else{
+                  // alert("customer created successfully")
+
                     window.location.href = "main.html"
                 }
+                debugger
             }
         });
+    }
+
+    function back() {
+        console.log("i m fired")
+        window.open("main.html");
+        // window.history.go(-1)
+
     }
 </script>
 

@@ -3,8 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <script src="jquery-3.4.1.min.js"></script>
-    <title>Welcome to LALAkiSHop</title>
+    <title>Service Mitra: Main</title>
     <style>
+body {
+        background-image: url("resource/2.jpg");
+         /* Full height */
+
+  background-repeat: no-repeat;
+  height: 100%;
+  
+
+  /* Center and scale the image nicely */
+  background-position: center;
+background-size: cover;
+  
+  
+    }
+    button{
+  background-color: rgba(255, 0, 0, 0.8);
+  color:white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+input[type=text] {
+    padding: 12px 20px;
+    margin: 4px 2px;
+  cursor: pointer;
+  border: 2px solid ;
+  border-radius: 4px;
+}
+
         table {
             font-family: arial, sans-serif;
             /*border-collapse: collapse;*/
@@ -12,7 +42,7 @@
         }
 
         td, th {
-            border: 1px solid #dddddd;
+            border: 1px solid #000000;
             text-align: left;
             padding: 8px;
         }
@@ -26,13 +56,14 @@
             background-color: #a0ffb3;
         }
 
-         body { background-image: url("resource/banner.jpg")}
+         
 
     </style>
 </head>
 <body>
 
-<h1>WELCOME TO THE LALAKISHOP</h1>
+<h1>Welcome to Service Mitra</h1>
+<h4>by Lalakishop</h4>
 <div>
     <nav>
         <button onclick="add()"> ADD</button>
@@ -41,7 +72,7 @@
         <button onclick="deleteCustomer()">DELETE</button>
         <span style="float: right">
         <label for="iduser" ></label>
-        <input type="text" id="iduser" name="iduser" placeholder="Enter ID or USERNAME">
+        <input type="text" id="iduser" name="iduser" placeholder="Enter Mobile or USERNAME">
         <button onclick="readone()">SEARCH</button>
         </span>
     </nav>
@@ -56,12 +87,12 @@
         <table id="mainTable" class="mTable">
             <tr>
                 <th>Serial No.</th>
-                <th>username</th>
-                <th>name</th>
-                <th>mobile</th>
-                <th>address</th>
-                <th>description</th>
-                <th>extras</th>
+                <th>UserName</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Address</th>
+                <th>Description</th>
+                <th>Extras</th>
                 <th>created_date</th>
                 <th>modified_date</th>
                 <th>Products</th>
@@ -197,6 +228,9 @@
             readall()
         }
     });
+
+
+    
 
 </script>
 

@@ -4,13 +4,45 @@
     <meta charset="UTF-8">
     <script src="jquery-3.4.1.min.js"></script>
 
-    <title>Title</title>
+    <title>Service Mitra: Delete User</title>
 </head>
+<style type="text/css">
+body {background-image: url("resource/2.jpg");
+         /* Full height */
+  background-repeat: no-repeat;
+  height: 100%;
+  /* Center and scale the image nicely */
+  background-position: center;
+background-size: cover;
+  }
+
+
+
+    input[type=text] {
+    padding: 6px 20px;
+    margin: 4px 2px;
+  cursor: pointer;
+  border: 2px solid ;
+  border-radius: 4px;
+}
+
+
+input[type=submit]
+{
+    background-color: rgba(255, 0, 0, 0.8); /* red with opacity */
+
+  color:white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+</style>
 <body>
 <div>
     <h2 id ="delete"></h2>
     <label for="id">Enter ID or USERNAME:</label><br>
-    <input type="text" id="id" name="id" placeholder="Enter ID or USERNAME"><br>
+    <input type="text" id="id" name="id" placeholder=" Enter Username"><br>
     <input type="submit" value="Submit" onclick="onSubmit()">
 
 </div>

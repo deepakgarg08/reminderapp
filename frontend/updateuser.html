@@ -4,34 +4,71 @@
     <meta charset="UTF-8">
     <script src="jquery-3.4.1.min.js"></script>
 
-    <title>Title</title>
+    <title>Service Mitra: Update User</title>
 </head>
+<style type="text/css">
+body {background-image: url("resource/2.jpg");
+         /* Full height */
+  background-repeat: no-repeat;
+  height: 100%;
+  /* Center and scale the image nicely */
+  background-position: center;
+background-size: cover;
+  }
+
+
+
+    input[type=text] {
+    padding: 6px 20px;
+    margin: 4px 2px;
+  cursor: pointer;
+  border: 2px solid ;
+  border-radius: 4px;
+}
+
+input[type=submit]
+{
+    background-color: rgba(255, 0, 0, 0.8); /* red with opacity */
+
+  color:white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+div{
+    float: center;
+      margin: auto;
+  width: 12%;
+  padding: 12px;
+}
+</style>
 <body>
 <div>
 
     <label for="id">id:</label><br>
     <input type="text" id="id" name="id" placeholder="optional"><br>
     <label for="username">username:</label><br>
-    <input type="text" id="username" name="username" required><br>
+    <input type="text" id="username" name="username" placeholder="Username" required><br>
     <label for="name">name:</label><br>
-    <input type="text" id="name" name="name" required><br><br>
+    <input type="text" id="name" name="name" placeholder="Customer Name" required><br><br>
     <label for="mobile">mobile:</label><br>
-    <input type="text" id="mobile" name="mobile"><br>
+    <input type="text" id="mobile" placeholder="Mobile No." name="mobile"><br>
     <label for="address">address:</label><br>
-    <input type="text" id="address" name="address"><br><br>
+    <input type="text" id="address" placeholder="Address" name="address"><br><br>
     <label for="extras">extras:</label><br>
-    <input type="text" id="extras" name="extras"><br>
+    <input type="text" id="extras" placeholder="Extra Notes" name="extras"><br>
     <h4>product details</h4>
     <h5>Product1</h5>
 
     <label for="product_name">product_name:</label><br>
-    <input type="text" id="product_name" name="product_name"><br>
+    <input type="text" id="product_name" placeholder="Product Name" name="product_name"><br>
     <label for="description">description:</label><br>
-    <input type="text" id="description" name="description"><br>
+    <input type="text" id="description" placeholder="Description" name="description"><br>
     <label for="price">price:</label><br>
-    <input type="text" id="price" name="price"><br>
+    <input type="text" id="price" placeholder="Price" name="price"><br>
     <label for="note">note:</label><br>
-    <input type="text" id="note" name="note"><br>
+    <input type="text" id="note" placeholder="Extra Notes" name="note"><br>
 
     <input type="submit" value="Submit" onclick="onSubmit()">
 

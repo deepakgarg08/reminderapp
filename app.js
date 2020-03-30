@@ -78,7 +78,7 @@ app.post('/authenticate', async function (request, response) {
 })
 
 app.post('/new', async function (request, response) {
-    console.log("admin_user  ", admin_user)
+    //console.log("admin_user  ", admin_user)
 
     if (admin_user === 100) {
 
