@@ -10,11 +10,11 @@
         background-image: url("resource/2.jpg");
         text-align: center;
                 /* Full height */
-  background-repeat: no-repeat;
-  height: 100%;
-  /* Center and scale the image nicely */
-  background-position: center;
-background-size: cover;
+        background-repeat: no-repeat;
+        height: 100%;
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-size: cover;
     }
 
 
@@ -52,7 +52,7 @@ input[type=password] {
 <h3 id="auth"></h3>
 
 <div>
-    <form method="post">
+    <form onsubmit="return false">
 	      <label for="username">Username:</label><br> 
         <input type="text" id="username" name="username" value="dkadmin" placeholder="Username" required/><br>
         <label for="password">password:</label><br>
@@ -83,7 +83,8 @@ input[type=password] {
 
                     if (res.output === "user authenticated") {
                         auth.innerHTML = "User Authenticated"
-                        window.open("main.html")
+                        window.location.href = "main.html"
+                        // window.open("main.html")
                     }
                     else{
                         auth.innerHTML = "wrong username or password"

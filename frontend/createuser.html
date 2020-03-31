@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
 
     <title>Service Mitra: New User</title>
 </head>
 <style type="text/css">
-    body {background-image: url("resource/2.jpg");
+    body {
+        background-image: url("resource/2.jpg");
          /* Full height */
   background-repeat: no-repeat;
   height: 100%;
@@ -22,7 +23,7 @@ background-size: cover;
   border: 2px solid ;
   border-radius: 4px;
 }
-input[type=submit], input[type=back]
+ input[type=submit],input[type=button]
 {
     background-color: rgba(255, 0, 0, 0.8); /* red with opacity */
 
@@ -38,6 +39,15 @@ div{
   width: 12%;
   padding: 12px;
 }
+
+input[type=number]{
+
+  padding: 12px 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: 2px solid;
+    border-radius: 4px;
+}
 h1,h3{text-align: center;}
 </style>
 <body>
@@ -45,19 +55,19 @@ h1,h3{text-align: center;}
     <h3>Register a New Customer</h3>
 <div>
 
-  <form>
+  <form onsubmit="return false">
     <label for="username">username:</label><br>
     <input type="text" id="username" name="username" placeholder="username" required/><br>
     <label for="name">name:</label><br>
     <input type="text" id="name"  placeholder="Customer Name" required><br><br>
     <label for="mobile">mobile:</label><br>
-    <input type="text" id="mobile" name="mobile" placeholder="Mobile No." ><br>
+    <input type="number" id="mobile"  name="mobile" placeholder="Mobile No."><br>
     <label for="address">address:</label><br>
     <input type="text" id="address" name="address" placeholder="Address" ><br><br>
     <label for="extras">extras:</label><br>
     <input type="text" id="extras" name="extras"  placeholder="Extra Notes"><br>
-    <input type="submit" value="Submit" onclick="onSubmit()"><br>
-    <input type="button" value="Back" onclick="back()"> 
+    <input type="submit" value="Submit" onclick="onSubmit()">
+    <input type="button" value="Back" onclick="back()" /> 
 </form>
 </div>
 <script>
@@ -69,25 +79,24 @@ h1,h3{text-align: center;}
         let address = $("#address").val().trim()
         let extras = $("#extras").val().trim()
 
-        // if(username === "" || username === null || !username){
-        //   alert("please enter username")
-        //   return
-        // }
+        if(username === "" || username === null || !username){
+          alert("please enter username")
+          return
+        }
 
-        // if(name === "" || name === null || !name){
-        //   alert("please enter name")
-        //   return
-        // }
+        if(name === "" || name === null || !name){
+          alert("please enter name")
+          return
+        }
 
-        // if(mobile === "" || mobile === null || !mobile){
-        //   alert("please enter mobile")
-        //   return
-        // }
-
-        // if(address === "" || address === null || !address){
-        //   alert("please enter address")
-        //   return
-        // }
+        if((mobile === "" || mobile === null || !mobile) || mobile.length !== 10){
+          alert("please enter correct mobile number")
+          return
+        } 
+        if(address === "" || address === null || !address){
+          alert("please enter address")
+          return
+        }
 
         formjson.username = username;
         formjson.name = name;
@@ -106,18 +115,16 @@ h1,h3{text-align: center;}
             data: formjson,
             // dataType: 'JSON',
             success: function(result) {
-                console.log("check response result ", result)
                 if (result === "username already exist") {
                     alert("username already exist")
+
                     window.location.reload()
                 }else if(result === "you are not authorized"){
                   alert("you are not authorized")
-
                     window.location.href = "index.html"
                 }
                 else{
-                  // alert("customer created successfully")
-
+                  alert("customer created successfully")
                     window.location.href = "main.html"
                 }
                 debugger
@@ -126,9 +133,7 @@ h1,h3{text-align: center;}
     }
 
     function back() {
-        console.log("i m fired")
         window.open("main.html");
-        // window.history.go(-1)
 
     }
 </script>
